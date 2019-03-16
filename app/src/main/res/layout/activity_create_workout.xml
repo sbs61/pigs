@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/createWorkoutHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/createWorkout" />
+
+        <EditText
+            android:id="@+id/workoutName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Workout name"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/workoutCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Category"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/workoutDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoText="false"
+            android:editable="false"
+            android:ems="10"
+            android:hint="Select Date"
+            android:inputType="datetime"
+            android:selectAllOnFocus="true"
+            android:visibility="visible" />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Make My Workout Public" />
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
