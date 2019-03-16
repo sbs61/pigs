@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PIGS</string>
+    <string name="createExercise">Create Exercise</string>
+    <string name="exerciseName">Exercise Name</string>
+    <string name="exerciseCategory">Exercise Category</string>
+    <string name="schedule">Schedule</string>
 </resources>
