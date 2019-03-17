@@ -86,7 +86,6 @@ public class ExercisesActivity extends AppCompatActivity {
                 //todo leita úr gagnagrunninum af exercises með valueinu og setja results í listann, gæti þurft að cleara listann í hvert skipti?
             }
         });
-
     }
 
     private class FetchItemsTask extends AsyncTask<Object, Void, Boolean> {

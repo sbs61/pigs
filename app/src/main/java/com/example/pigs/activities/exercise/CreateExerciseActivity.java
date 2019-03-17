@@ -8,7 +8,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CalendarView;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
@@ -60,6 +62,14 @@ public class CreateExerciseActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+    public void createExercise(View button){
+        EditText name = (EditText) findViewById(R.id.exercise_name);
+        String exercise_name = name.getText().toString();
+        EditText category = (EditText) findViewById(R.id.exercise_category);
+        String exercise_category = category.getText().toString();
+        Toast.makeText(getApplicationContext(), "" + exercise_name + " og " + exercise_category, Toast.LENGTH_LONG).show();
     }
 
     @Override

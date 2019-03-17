@@ -58,6 +58,7 @@
             android:id="@+id/create_exercise_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="createExercise"
             android:padding="18dp"
             android:text="@string/createExercise"
             android:textSize="18sp" />
