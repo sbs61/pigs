@@ -7,15 +7,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-<<<<<<< HEAD
-=======
 import com.example.pigs.MainActivity;
 import com.example.pigs.entities.Exercise;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONObject;
->>>>>>> ecc5b4269d0c2e0dc995269b6d314b94535aab7e
 
 import java.io.IOException;
 
