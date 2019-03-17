@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_exercises"
+            android:title="@string/exercises" />
+        <item
+            android:id="@+id/nav_workouts"
+            android:title="@string/workouts" />
+        <item
+            android:id="@+id/nav_shedule"
+            android:title="@string/schedule" />
+        <item
+            android:id="@+id/nav_progress"
+            android:title="@string/progress" />
+    </group>
+</menu>

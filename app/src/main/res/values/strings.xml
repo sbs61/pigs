@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">PIGS</string>
     <string name="createExercise">Create Exercise</string>
+    <string name="createWorkout">Create A Workout</string>
     <string name="exerciseName">Exercise Name</string>
     <string name="exerciseCategory">Exercise Category</string>
     <string name="schedule">Schedule</string>
+    <string name="workouts">Workouts</string>
+    <string name="exercises">Exercises</string>
+    <string name="progress">Progress</string>
 </resources>
