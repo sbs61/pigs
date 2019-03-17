@@ -12,13 +12,21 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.pigs.MainActivity;
 import com.example.pigs.R;
+import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.entities.Exercise;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
 
 public class ExercisesActivity extends AppCompatActivity {
 
@@ -55,21 +63,24 @@ public class ExercisesActivity extends AppCompatActivity {
                             case R.id.nav_shedule:{
                                 Intent i = new Intent(ExercisesActivity.this, ScheduleActivity.class);
                                 startActivity(i);
+                                break;
+                            }
+                            case R.id.nav_progress:{
+                                Intent i = new Intent(ExercisesActivity.this, ProgressActivity.class);
+                                startActivity(i);
+                                break;
                             }
                         }
                         return true;
                     }
                 });
 
-        AsyncTask task = new ExercisesActivity.FetchItemsTask();
-        task.execute();
-
         editText = (EditText) findViewById(R.id.editText);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                // TODO Auto-generated method stub
+                AsyncTask task = new FetchExercisesTask();
+                task.execute();
             }
 
             @Override
@@ -86,19 +97,24 @@ public class ExercisesActivity extends AppCompatActivity {
                 //todo leita úr gagnagrunninum af exercises með valueinu og setja results í listann, gæti þurft að cleara listann í hvert skipti?
             }
         });
-
     }
 
-    private class FetchItemsTask extends AsyncTask<Object, Void, Boolean> {
+    private class FetchExercisesTask extends AsyncTask<Object, Void, String> {
         @Override
-        protected Boolean doInBackground(Object... params) {
-            Exercise ex = new Exercise(2L, "Bench press", "Chest");
-            return new ExerciseController().createExercise(ex);
+        protected String doInBackground(Object... params) {
+            return new ExerciseController().getExercises();
         }
 
         @Override
-        protected void onPostExecute(Boolean items) {
-            System.out.println(items);
+        protected void onPostExecute(String items) {
+            TextView textView = (TextView) findViewById(R.id.exercise_textView);
+            Gson gson = new Gson();
+            //Exercise ex = gson.fromJson(items, Exercise.class);
+            List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>(){}.getType());
+            textView.setText("");
+            for (Exercise element : list) {
+                textView.append(element.getName() + "\n");
+            }
         }
     }
 

@@ -16,9 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activities.exercise.ExercisesActivity">
+
+        </activity>
+        <activity android:name=".activities.workout.CreateWorkoutActivity">
+        </activity>
+
         <activity android:name=".activities.exercise.ExercisesActivity"></activity>
         <activity android:name=".activities.exercise.CreateExerciseActivity"></activity>
         <activity android:name=".activities.workout.ScheduleActivity"></activity>
+        <activity android:name=".activities.progress.ProgressActivity"></activity>
+        <activity android:name=".activities.progress.GraphActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

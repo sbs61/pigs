@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.pigs.R;
 import com.example.pigs.activities.exercise.CreateExerciseActivity;
 import com.example.pigs.activities.exercise.ExercisesActivity;
+import com.example.pigs.activities.progress.ProgressActivity;
 
 public class ScheduleActivity extends AppCompatActivity {
 
@@ -50,6 +51,11 @@ public class ScheduleActivity extends AppCompatActivity {
                             case R.id.nav_exercises:{
                                 Intent i = new Intent(ScheduleActivity.this, ExercisesActivity.class);
                                 startActivity(i);
+                            }
+                            case R.id.nav_progress:{
+                                Intent i = new Intent(ScheduleActivity.this, ProgressActivity.class);
+                                startActivity(i);
+                                break;
                             }
                         }
                         return true;

@@ -43,7 +43,8 @@ public class ExerciseController {
         return jsonString;
     }
 
-    public Boolean createExercise(Exercise ex) {
+    public Boolean createExercise(String name, String category) {
+        Exercise ex = new Exercise(null, name, category);
         String url = "https://hugbun2.herokuapp.com/exercise";
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(ex);
