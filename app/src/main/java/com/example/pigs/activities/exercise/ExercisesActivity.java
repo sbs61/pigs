@@ -22,6 +22,10 @@ import com.example.pigs.R;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.entities.Exercise;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
 
 public class ExercisesActivity extends AppCompatActivity {
 
@@ -64,17 +68,12 @@ public class ExercisesActivity extends AppCompatActivity {
                     }
                 });
 
-        AsyncTask task = new ExercisesActivity.FetchItemsTask();
-        task.execute();
-
         editText = (EditText) findViewById(R.id.editText);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                AsyncTask task = new FetchItemsTask();
+                AsyncTask task = new FetchExercisesTask();
                 task.execute();
-                System.out.println(s);
-                // TODO Auto-generated method stub
             }
 
             @Override
@@ -94,7 +93,7 @@ public class ExercisesActivity extends AppCompatActivity {
 
     }
 
-    private class FetchItemsTask extends AsyncTask<Object, Void, String> {
+    private class FetchExercisesTask extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... params) {
             return new ExerciseController().getExercises();
@@ -103,8 +102,13 @@ public class ExercisesActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String items) {
             TextView textView = (TextView) findViewById(R.id.exercise_textView);
-            textView.setText(items);
-            System.out.println(items);
+            Gson gson = new Gson();
+            //Exercise ex = gson.fromJson(items, Exercise.class);
+            List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>(){}.getType());
+            textView.setText("");
+            for (Exercise element : list) {
+                textView.append(element.getName() + "\n");
+            }
         }
     }
 
