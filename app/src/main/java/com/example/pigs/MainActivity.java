@@ -9,7 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pigs.R;
+import com.example.pigs.activities.exercise.CreateExerciseActivity;
 import com.example.pigs.activities.exercise.ExercisesActivity;
+import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent i = new Intent(MainActivity.this, ExercisesActivity.class);
+        Intent i = new Intent(MainActivity.this, CreateExerciseActivity.class);
         startActivity(i);
     }
 

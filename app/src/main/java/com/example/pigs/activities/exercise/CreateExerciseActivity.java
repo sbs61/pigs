@@ -1,5 +1,6 @@
 package com.example.pigs.activities.exercise;
 
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,7 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
+import com.example.pigs.MainActivity;
 import com.example.pigs.R;
+import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.entities.Exercise;
 
@@ -48,6 +51,8 @@ public class CreateExerciseActivity extends AppCompatActivity {
 
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
+                            Intent i = new Intent(CreateExerciseActivity.this, ScheduleActivity.class);
+                            startActivity(i);
 
                         return true;
                     }
