@@ -55,13 +55,15 @@ public class CreateExerciseActivity extends AppCompatActivity {
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
                         switch(menuItem.getItemId()){
-                            case R.id.nav_shedule:{
-                                Intent i = new Intent(CreateExerciseActivity.this, ScheduleActivity.class);
-                                startActivity(i);
-                            }
                             case R.id.nav_exercises:{
                                 Intent i = new Intent(CreateExerciseActivity.this, ExercisesActivity.class);
                                 startActivity(i);
+                                break;
+                            }
+                            case R.id.nav_shedule:{
+                                Intent i = new Intent(CreateExerciseActivity.this, ScheduleActivity.class);
+                                startActivity(i);
+                                break;
                             }
                         }
                         return true;
