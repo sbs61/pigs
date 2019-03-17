@@ -1,6 +1,7 @@
 package com.example.pigs.activities.exercise;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -58,6 +59,10 @@ public class CreateExerciseActivity extends AppCompatActivity {
                                 Intent i = new Intent(CreateExerciseActivity.this, ScheduleActivity.class);
                                 startActivity(i);
                             }
+                            case R.id.nav_exercises:{
+                                Intent i = new Intent(CreateExerciseActivity.this, ExercisesActivity.class);
+                                startActivity(i);
+                            }
                         }
                         return true;
                     }
@@ -65,11 +70,8 @@ public class CreateExerciseActivity extends AppCompatActivity {
     }
 
     public void createExercise(View button){
-        EditText name = (EditText) findViewById(R.id.exercise_name);
-        String exercise_name = name.getText().toString();
-        EditText category = (EditText) findViewById(R.id.exercise_category);
-        String exercise_category = category.getText().toString();
-        Toast.makeText(getApplicationContext(), "" + exercise_name + " og " + exercise_category, Toast.LENGTH_LONG).show();
+        AsyncTask task = new CreateExerciseActivity.CreateExerciseTask();
+        task.execute();
     }
 
     @Override
@@ -80,5 +82,26 @@ public class CreateExerciseActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private class CreateExerciseTask extends AsyncTask<Object, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Object... params) {
+            EditText name = (EditText) findViewById(R.id.exercise_name);
+            String exercise_name = name.getText().toString();
+            EditText category = (EditText) findViewById(R.id.exercise_category);
+            String exercise_category = category.getText().toString();
+            if(exercise_name != "" && exercise_category != "") {
+                name.setText("");
+                category.setText("");
+                return new ExerciseController().createExercise(exercise_name, exercise_category);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean items) {
+            System.out.println(items);
+        }
     }
 }
