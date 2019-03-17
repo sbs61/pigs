@@ -41,17 +41,11 @@
             android:hint="Category"
             android:inputType="textPersonName" />
 
-        <EditText
+        <TextView
             android:id="@+id/workoutDate"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:autoText="false"
-            android:editable="false"
-            android:ems="10"
-            android:hint="Select Date"
-            android:inputType="datetime"
-            android:selectAllOnFocus="true"
-            android:visibility="visible" />
+            android:text="TextView" />
 
         <CheckBox
             android:id="@+id/checkBox"

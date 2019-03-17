@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         AsyncTask task = new FetchItemsTask();
         task.execute();
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_create_workout);
     }
 
     private class FetchItemsTask extends AsyncTask<Object, Void, String> {
