@@ -12,7 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.pigs.MainActivity;
 import com.example.pigs.R;
@@ -68,7 +71,9 @@ public class ExercisesActivity extends AppCompatActivity {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                AsyncTask task = new FetchItemsTask();
+                task.execute();
+                System.out.println(s);
                 // TODO Auto-generated method stub
             }
 
@@ -89,15 +94,16 @@ public class ExercisesActivity extends AppCompatActivity {
 
     }
 
-    private class FetchItemsTask extends AsyncTask<Object, Void, Boolean> {
+    private class FetchItemsTask extends AsyncTask<Object, Void, String> {
         @Override
-        protected Boolean doInBackground(Object... params) {
-            Exercise ex = new Exercise(2L, "Bench press", "Chest");
-            return new ExerciseController().createExercise(ex);
+        protected String doInBackground(Object... params) {
+            return new ExerciseController().getExercises();
         }
 
         @Override
-        protected void onPostExecute(Boolean items) {
+        protected void onPostExecute(String items) {
+            TextView textView = (TextView) findViewById(R.id.exercise_textView);
+            textView.setText(items);
             System.out.println(items);
         }
     }

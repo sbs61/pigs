@@ -41,11 +41,11 @@ android:fitsSystemWindows="true">
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="18dp" />
 
-    <ListView
-        android:layout_width="395dp"
-        android:layout_height="659dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="64dp" />
+    <TextView
+        android:id="@+id/exercise_textView"
+        android:layout_width="match_parent"
+        android:layout_height="608dp"
+        android:text="TextView" />
 
 </LinearLayout>
 
