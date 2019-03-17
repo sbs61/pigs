@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent i = new Intent(MainActivity.this, CreateExerciseActivity.class);
+        Intent i = new Intent(MainActivity.this, ExercisesActivity.class);
         startActivity(i);
     }
 
