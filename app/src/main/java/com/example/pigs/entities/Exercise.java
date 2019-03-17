@@ -5,6 +5,7 @@ public class Exercise {
     private String name;
     private String category;
 
+
     public Exercise(Long id, String name, String category) {
         this.id = id;
         this.name = name;
