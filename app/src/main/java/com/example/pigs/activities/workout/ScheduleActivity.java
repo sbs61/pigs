@@ -13,7 +13,7 @@ public class ScheduleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_exercise);
+        setContentView(R.layout.activity_schedule);
         final int day = 25;
         final int month2 = 3;
         final int year2 = 2019;
