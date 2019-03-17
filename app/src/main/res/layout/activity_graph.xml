@@ -30,40 +30,10 @@
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
 
-        <TextView
-            android:id="@+id/createExerciseTitle"
+        <com.jjoe64.graphview.GraphView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/createExercise"
-            android:textSize="36sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/exercise_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/exerciseName"
-            android:autofillHints="@string/exerciseName"
-            android:inputType="text" />
-
-        <EditText
-            android:id="@+id/exercise_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/exerciseCategory"
-            android:autofillHints="@string/exerciseCategory"
-            android:inputType="text" />
-
-        <Button
-            android:id="@+id/create_exercise_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="createExercise"
-            android:padding="18dp"
-            android:text="@string/createExercise"
-            android:textSize="18sp" />
+            android:layout_height="200dip"
+            android:id="@+id/graph" />
 
     </LinearLayout>
 

@@ -8,4 +8,8 @@
     <string name="workouts">Workouts</string>
     <string name="exercises">Exercises</string>
     <string name="progress">Progress</string>
+    <string name="addProgress">Add Progress</string>
+    <string name="weights">Weights</string>
+    <string name="reps">Reps</string>
+    <string name="sets">Sets</string>
 </resources>

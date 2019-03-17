@@ -20,7 +20,10 @@ import android.widget.TextView;
 import java.util.Calendar;
 
 import com.example.pigs.R;
+import com.example.pigs.activities.exercise.CreateExerciseActivity;
 import com.example.pigs.activities.exercise.ExercisesActivity;
+import com.example.pigs.activities.progress.GraphActivity;
+import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
 
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
