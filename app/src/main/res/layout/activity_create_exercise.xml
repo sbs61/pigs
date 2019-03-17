@@ -44,6 +44,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/exerciseName"
+            android:autofillHints="@string/exerciseName"
             android:inputType="text" />
 
         <EditText
@@ -52,12 +53,14 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/exerciseCategory"
+            android:autofillHints="@string/exerciseCategory"
             android:inputType="text" />
 
         <Button
             android:id="@+id/create_exercise_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="createExercise"
             android:padding="18dp"
             android:text="@string/createExercise"
             android:textSize="18sp" />
