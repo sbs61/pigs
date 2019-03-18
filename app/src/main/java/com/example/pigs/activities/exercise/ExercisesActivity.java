@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.pigs.MainActivity;
 import com.example.pigs.R;
+import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.entities.Exercise;
@@ -62,6 +63,12 @@ public class ExercisesActivity extends AppCompatActivity {
                             case R.id.nav_shedule:{
                                 Intent i = new Intent(ExercisesActivity.this, ScheduleActivity.class);
                                 startActivity(i);
+                                break;
+                            }
+                            case R.id.nav_progress:{
+                                Intent i = new Intent(ExercisesActivity.this, ProgressActivity.class);
+                                startActivity(i);
+                                break;
                             }
                         }
                         return true;
