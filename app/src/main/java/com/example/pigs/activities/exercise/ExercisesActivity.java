@@ -72,7 +72,7 @@ public class ExercisesActivity extends AppCompatActivity {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                AsyncTask task = new FetchExercisesTask();
+                AsyncTask task = new FetchExercisesTask ();
                 task.execute();
             }
 
