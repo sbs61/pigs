@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,13 +30,24 @@ import java.io.IOException;
 
 public class CreateExerciseActivity extends AppCompatActivity {
     private ExerciseController exerciseController;
-
     private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_exercise);
+
+        Spinner dropdown = findViewById(R.id.spinner);
+        String[] items = new String[]{"Arms", "Back", "Chest", "Core", "Legs", "Shoulders", "Pick a category"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items) {
+            @Override
+            public int getCount() {
+                return super.getCount()-1; // you dont display last item. It is used as hint.
+            }
+        };
+
+        dropdown.setAdapter(adapter);
+        dropdown.setSelection(adapter.getCount());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -98,10 +112,16 @@ public class CreateExerciseActivity extends AppCompatActivity {
             EditText name = (EditText) findViewById(R.id.exercise_name);
             String exercise_name = name.getText().toString();
             EditText category = (EditText) findViewById(R.id.exercise_category);
-            String exercise_category = category.getText().toString();
+            Spinner dropdown = (Spinner) findViewById(R.id.spinner);
+            String exercise_category = dropdown.getSelectedItem().toString();
             if(exercise_name != "" && exercise_category != "") {
                 name.setText("");
-                category.setText("");
+                dropdown.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        dropdown.setSelection(6);
+                    }
+                });
                 return new ExerciseController().createExercise(exercise_name, exercise_category);
             }
             return null;

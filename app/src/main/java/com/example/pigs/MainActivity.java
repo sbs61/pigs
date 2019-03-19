@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("test", "testing testing");
 
-        Intent intent = new Intent(MainActivity.this, ExercisesActivity.class);
+        Intent intent = new Intent(MainActivity.this, CreateExerciseActivity.class);
         MainActivity.this.startActivity(intent);
         //setContentView(R.layout.activity_create_workout);
 
