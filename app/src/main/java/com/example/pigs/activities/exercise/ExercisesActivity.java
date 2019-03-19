@@ -79,7 +79,7 @@ public class ExercisesActivity extends AppCompatActivity {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                AsyncTask task = new FetchExercisesTask ();
+                AsyncTask task = new FetchExercisesTask();
                 task.execute();
             }
 
@@ -102,7 +102,9 @@ public class ExercisesActivity extends AppCompatActivity {
     private class FetchExercisesTask extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... params) {
-            return new ExerciseController().getExercises();
+            EditText name = (EditText) findViewById(R.id.editText);
+            String ex_name = name.getText().toString();
+            return new ExerciseController().getExercises(ex_name);
         }
 
         @Override
@@ -110,10 +112,14 @@ public class ExercisesActivity extends AppCompatActivity {
             TextView textView = (TextView) findViewById(R.id.exercise_textView);
             Gson gson = new Gson();
             //Exercise ex = gson.fromJson(items, Exercise.class);
-            List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>(){}.getType());
-            textView.setText("");
-            for (Exercise element : list) {
-                textView.append(element.getName() + "\n");
+            if(items != null) {
+                List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>() {
+                }.getType());
+                textView.setText("");
+
+                for (Exercise element : list) {
+                    textView.append(element.getName() + "\n");
+                }
             }
         }
     }
