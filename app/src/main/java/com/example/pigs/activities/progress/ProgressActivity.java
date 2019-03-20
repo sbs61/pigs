@@ -57,13 +57,13 @@ public class ProgressActivity extends AppCompatActivity {
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
                         switch(menuItem.getItemId()){
-                            case R.id.nav_workouts:{
-                                Intent i = new Intent(ProgressActivity.this, CreateWorkoutActivity.class);
+                            case R.id.nav_exercises:{
+                                Intent i = new Intent(ProgressActivity.this, ExercisesActivity.class);
                                 startActivity(i);
                                 break;
                             }
-                            case R.id.nav_exercises:{
-                                Intent i = new Intent(ProgressActivity.this, ExercisesActivity.class);
+                            case R.id.nav_workouts:{
+                                Intent i = new Intent(ProgressActivity.this, CreateWorkoutActivity.class);
                                 startActivity(i);
                                 break;
                             }

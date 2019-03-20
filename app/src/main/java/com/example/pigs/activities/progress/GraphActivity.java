@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import com.example.pigs.MainActivity;
 import com.example.pigs.R;
 import com.example.pigs.activities.exercise.ExercisesActivity;
+import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.entities.Exercise;
@@ -102,6 +103,11 @@ public class GraphActivity extends AppCompatActivity {
                         switch(menuItem.getItemId()){
                             case R.id.nav_exercises:{
                                 Intent i = new Intent(GraphActivity.this, ExercisesActivity.class);
+                                startActivity(i);
+                                break;
+                            }
+                            case R.id.nav_workouts:{
+                                Intent i = new Intent(GraphActivity.this, CreateWorkoutActivity.class);
                                 startActivity(i);
                                 break;
                             }
