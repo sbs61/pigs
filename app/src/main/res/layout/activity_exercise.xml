@@ -11,73 +11,91 @@ android:fitsSystemWindows="true">
 
 
 <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginBottom="16dp"
-    android:orientation="vertical"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="?attr/colorPrimaryDark"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Search for an exercise"
-        android:inputType="text"
-        android:padding="10dp"
-        android:textSize="24sp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="18dp" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="?attr/colorPrimaryDark"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:onClick="goBack"
-        android:text="Back"
-        android:textSize="18sp"
-        android:visibility="gone" />
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Search for an exercise"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="18dp" />
 
-    <TextView
-        android:id="@+id/selectedCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textSize="30sp"
-        android:visibility="gone" />
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:onClick="goBack"
+            android:text="Back"
+            android:textSize="18sp"
+            android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/exercise_textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="24sp"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/selectedCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:visibility="gone" />
 
-    <include
-        android:id="@+id/categoriesLayout"
-        layout="@layout/activity_categories" />
+        <TextView
+            android:id="@+id/exercise_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="24sp"
+            android:visibility="gone" />
 
-</LinearLayout>
+        <include
+            android:id="@+id/categoriesLayout"
+            layout="@layout/activity_categories"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/addExercise"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:onClick="goToCreateExercise"
+                android:text="@string/createExercise"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
-<android.support.design.widget.NavigationView
+
+    <android.support.design.widget.NavigationView
     android:id="@+id/nav_view"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"

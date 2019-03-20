@@ -215,6 +215,11 @@ public class ExercisesActivity extends AppCompatActivity {
         textView.setVisibility(TextView.GONE);
     }
 
+    public void goToCreateExercise(View button){
+        Intent i = new Intent(ExercisesActivity.this, CreateExerciseActivity.class);
+        startActivity(i);
+    }
+
     private class FetchExercisesTask extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... params) {
