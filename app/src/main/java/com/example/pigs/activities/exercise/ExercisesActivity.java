@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.pigs.MainActivity;
 import com.example.pigs.R;
+import com.example.pigs.activities.authentication.LoginActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
@@ -217,6 +218,11 @@ public class ExercisesActivity extends AppCompatActivity {
 
     public void goToCreateExercise(View button){
         Intent i = new Intent(ExercisesActivity.this, CreateExerciseActivity.class);
+        startActivity(i);
+    }
+
+    public void goToLogin(View button){
+        Intent i = new Intent(ExercisesActivity.this, LoginActivity.class);
         startActivity(i);
     }
 
