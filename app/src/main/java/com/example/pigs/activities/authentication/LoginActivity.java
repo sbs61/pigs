@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_progress);
+        setContentView(R.layout.activity_login);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,6 +81,21 @@ public class LoginActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+    public void goToRegister(View button){
+        Intent i = new Intent(LoginActivity.this, RegistrationActivity.class);
+        startActivity(i);
+    }
+
+    public void userLogin(View button){
+        EditText username = (EditText) findViewById(R.id.username);
+        String login_username = username.getText().toString();
+        EditText password = (EditText) findViewById(R.id.password);
+        String login_password = password.getText().toString();
+
+        Intent i = new Intent(LoginActivity.this, ExercisesActivity.class);
+        startActivity(i);
     }
 
     @Override
