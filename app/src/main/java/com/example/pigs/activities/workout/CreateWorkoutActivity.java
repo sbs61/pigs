@@ -78,6 +78,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
                             case R.id.nav_exercises:{
                                 Intent i = new Intent(CreateWorkoutActivity.this, ExercisesActivity.class);
                                 startActivity(i);
+                                break;
                             }
                             case R.id.nav_schedule:{
                                 Intent i = new Intent(CreateWorkoutActivity.this, ScheduleActivity.class);
