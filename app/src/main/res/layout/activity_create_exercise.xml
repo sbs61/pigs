@@ -47,14 +47,10 @@
             android:autofillHints="@string/exerciseName"
             android:inputType="text" />
 
-        <EditText
-            android:id="@+id/exercise_category"
+        <Spinner
+            android:id="@+id/spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/exerciseCategory"
-            android:autofillHints="@string/exerciseCategory"
-            android:inputType="text" />
+            android:layout_height="34dp" />
 
         <Button
             android:id="@+id/create_exercise_button"

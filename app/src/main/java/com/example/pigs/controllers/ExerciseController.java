@@ -20,8 +20,8 @@ public class ExerciseController {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String TAG = MainActivity.class.getSimpleName();
 
-    public String getExercises() {
-        String url = "https://hugbun2.herokuapp.com/exercise";
+    public String getExercises(String name) {
+        String url = "https://hugbun2.herokuapp.com/exercise/name?name="+name;
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
