@@ -83,6 +83,11 @@ public class ProgressActivity extends AppCompatActivity {
         task.execute();
     }
 
+    public void goToViewProgress(View button){
+        Intent i = new Intent(ProgressActivity.this, GraphActivity.class);
+        startActivity(i);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

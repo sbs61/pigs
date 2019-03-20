@@ -74,6 +74,21 @@
             android:text="@string/addProgress"
             android:textSize="18sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/viewProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="goToViewProgress"
+                android:text="View Progress"
+                android:textSize="18sp" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
