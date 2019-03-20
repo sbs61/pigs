@@ -12,14 +12,17 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.pigs.MainActivity;
 import com.example.pigs.R;
 import com.example.pigs.activities.progress.ProgressActivity;
+import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.entities.Exercise;
@@ -32,11 +35,16 @@ public class ExercisesActivity extends AppCompatActivity {
 
     private EditText editText;
     private DrawerLayout drawerLayout;
+    private TextView textView;
+    private View categoriesLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
+
+        categoriesLayout = findViewById(R.id.categoriesLayout);
+        textView = (TextView) findViewById(R.id.exercise_textView);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,7 +68,12 @@ public class ExercisesActivity extends AppCompatActivity {
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
                         switch(menuItem.getItemId()){
-                            case R.id.nav_shedule:{
+                            case R.id.nav_workouts:{
+                                Intent i = new Intent(ExercisesActivity.this, CreateWorkoutActivity.class);
+                                startActivity(i);
+                                break;
+                            }
+                            case R.id.nav_schedule:{
                                 Intent i = new Intent(ExercisesActivity.this, ScheduleActivity.class);
                                 startActivity(i);
                                 break;
@@ -94,6 +107,14 @@ public class ExercisesActivity extends AppCompatActivity {
 
                 // TODO Auto-generated method stub
                 String searchQuery = editText.getText().toString();
+                if(searchQuery.length() == 0){
+                    textView.setVisibility(TextView.GONE);
+                    categoriesLayout.setVisibility(View.VISIBLE);
+                }
+                else{
+                    textView.setVisibility(TextView.VISIBLE);
+                    categoriesLayout.setVisibility(View.GONE);
+                }
                 //todo leita úr gagnagrunninum af exercises með valueinu og setja results í listann, gæti þurft að cleara listann í hvert skipti?
             }
         });
@@ -109,7 +130,6 @@ public class ExercisesActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String items) {
-            TextView textView = (TextView) findViewById(R.id.exercise_textView);
             Gson gson = new Gson();
             //Exercise ex = gson.fromJson(items, Exercise.class);
             if(items != null) {

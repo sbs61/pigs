@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import com.example.pigs.MainActivity;
 import com.example.pigs.R;
 import com.example.pigs.activities.exercise.ExercisesActivity;
+import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.entities.Exercise;
@@ -56,12 +57,17 @@ public class ProgressActivity extends AppCompatActivity {
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
                         switch(menuItem.getItemId()){
+                            case R.id.nav_workouts:{
+                                Intent i = new Intent(ProgressActivity.this, CreateWorkoutActivity.class);
+                                startActivity(i);
+                                break;
+                            }
                             case R.id.nav_exercises:{
                                 Intent i = new Intent(ProgressActivity.this, ExercisesActivity.class);
                                 startActivity(i);
                                 break;
                             }
-                            case R.id.nav_shedule:{
+                            case R.id.nav_schedule:{
                                 Intent i = new Intent(ProgressActivity.this, ScheduleActivity.class);
                                 startActivity(i);
                                 break;

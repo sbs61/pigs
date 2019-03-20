@@ -8,7 +8,7 @@
             android:id="@+id/nav_workouts"
             android:title="@string/workouts" />
         <item
-            android:id="@+id/nav_shedule"
+            android:id="@+id/nav_schedule"
             android:title="@string/schedule" />
         <item
             android:id="@+id/nav_progress"

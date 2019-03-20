@@ -46,9 +46,14 @@ android:fitsSystemWindows="true">
     <TextView
         android:id="@+id/exercise_textView"
         android:layout_width="match_parent"
-        android:layout_height="562dp"
+        android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/categoriesLayout"
+        layout="@layout/activity_categories" />
 
 </LinearLayout>
 

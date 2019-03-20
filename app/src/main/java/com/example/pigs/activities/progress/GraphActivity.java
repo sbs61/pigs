@@ -105,7 +105,7 @@ public class GraphActivity extends AppCompatActivity {
                                 startActivity(i);
                                 break;
                             }
-                            case R.id.nav_shedule:{
+                            case R.id.nav_schedule:{
                                 Intent i = new Intent(GraphActivity.this, ScheduleActivity.class);
                                 startActivity(i);
                                 break;

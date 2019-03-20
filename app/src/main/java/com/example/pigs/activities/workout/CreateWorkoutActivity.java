@@ -2,8 +2,14 @@ package com.example.pigs.activities.workout;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import com.example.pigs.R;
+import com.example.pigs.activities.exercise.ExercisesActivity;
+import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.controllers.ExerciseController;
 
 public class CreateWorkoutActivity extends AppCompatActivity {
@@ -29,6 +37,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
     private static final String TAG = "CreateWorkoutActivity";
 
     private ExerciseController exerciseController;
+    private DrawerLayout drawerLayout;
 
     private ListView list;
     private ArrayAdapter<String> adapter;
@@ -44,6 +53,47 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_workout);
         exerciseController = new ExerciseController();
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        drawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+                        switch(menuItem.getItemId()){
+                            case R.id.nav_exercises:{
+                                Intent i = new Intent(CreateWorkoutActivity.this, ExercisesActivity.class);
+                                startActivity(i);
+                            }
+                            case R.id.nav_schedule:{
+                                Intent i = new Intent(CreateWorkoutActivity.this, ScheduleActivity.class);
+                                startActivity(i);
+                                break;
+                            }
+                            case R.id.nav_progress:{
+                                Intent i = new Intent(CreateWorkoutActivity.this, ProgressActivity.class);
+                                startActivity(i);
+                                break;
+                            }
+                        }
+                        return true;
+                    }
+                });
+
         // Exercise list
         list = findViewById(R.id.exerciseList);
         arrayList = new ArrayList<String>();
@@ -85,6 +135,16 @@ public class CreateWorkoutActivity extends AppCompatActivity {
                 mDisplayDate.setText(date);
             }
         };
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
