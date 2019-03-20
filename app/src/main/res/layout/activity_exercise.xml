@@ -43,6 +43,25 @@ android:fitsSystemWindows="true">
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="18dp" />
 
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:onClick="goBack"
+        android:text="Back"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/selectedCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/exercise_textView"
         android:layout_width="match_parent"

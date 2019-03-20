@@ -43,6 +43,29 @@ public class ExerciseController {
         return jsonString;
     }
 
+    public String getExercisesByCategory(String category) {
+        String url = "https://hugbun2.herokuapp.com/category/"+category;
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        String jsonString = null;
+
+        try {
+            Response res = client.newCall(request).execute();
+            if (res.isSuccessful()){
+                jsonString = res.body().string();
+                Log.e(TAG, res.toString());
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Exception caught: ", e);
+        }
+
+        return jsonString;
+    }
+
     public Boolean createExercise(String name, String category) {
         Exercise ex = new Exercise(null, name, category);
         String url = "https://hugbun2.herokuapp.com/exercise";

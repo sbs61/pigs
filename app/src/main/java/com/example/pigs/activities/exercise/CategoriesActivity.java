@@ -1,3 +1,4 @@
+
 package com.example.pigs.activities.exercise;
 
 
@@ -12,6 +13,7 @@ import com.example.pigs.R;
 
 
 public class CategoriesActivity extends AppCompatActivity implements View.OnClickListener {
+
 
     private ImageButton imageButtonArms;
     private ImageButton imageButtonBack;
@@ -30,12 +32,13 @@ public class CategoriesActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /*
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
 
 
         imageButtonArms = (ImageButton) findViewById(R.id.imageButtonArms);
-        imageButtonBack = (ImageButton) findViewById(R.id.imageButtonBack);
+        imageButtonBack = (ImageButton) findViewById(R.id.backIMG);
         imageButtonChest = (ImageButton) findViewById(R.id.imageButtonChest);
         imageButtonCore = (ImageButton) findViewById(R.id.imageButtonCore);
         imageButtonLegs = (ImageButton) findViewById(R.id.imageButtonLegs);
@@ -62,14 +65,17 @@ public class CategoriesActivity extends AppCompatActivity implements View.OnClic
         buttonLegs.setOnClickListener(this);
         buttonShoulders.setOnClickListener(this);
 
-
+*/
 
     }
 
 
+
     @Override
     public void onClick(View v) {
+
         setContentView(R.layout.activity_category);
+        /*
         TextView textView = (TextView)findViewById(R.id.textViewTitle);
         switch (v.getId()) {
             case R.id.buttonArms:
@@ -91,6 +97,9 @@ public class CategoriesActivity extends AppCompatActivity implements View.OnClic
             case R.id.imageButtonShoulders:
                 textView.setText("Shoulders");
 
+
         }
+        */
     }
 }
+

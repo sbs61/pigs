@@ -43,27 +43,30 @@
                 android:gravity="center">
 
                 <ImageButton
-                    android:id="@+id/imageButtonBack"
+                    android:id="@+id/backIMG"
                     android:layout_width="116dp"
                     android:layout_height="163dp"
+                    android:onClick="categorySelected"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/back"
                     tools:layout_editor_absoluteX="151dp"
                     tools:layout_editor_absoluteY="153dp" />
 
                 <ImageButton
-                    android:id="@+id/imageButtonArms"
+                    android:id="@+id/armsIMG"
                     android:layout_width="116dp"
                     android:layout_height="163dp"
+                    android:onClick="categorySelected"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/arms"
                     tools:layout_editor_absoluteX="25dp"
                     tools:layout_editor_absoluteY="153dp" />
 
                 <ImageButton
-                    android:id="@+id/imageButtonChest"
+                    android:id="@+id/chestIMG"
                     android:layout_width="116dp"
                     android:layout_height="163dp"
+                    android:onClick="categorySelected"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/chest"
                     tools:layout_editor_absoluteX="279dp"
@@ -76,25 +79,28 @@
                 android:gravity="center">
 
                 <Button
-                    android:id="@+id/buttonArms"
+                    android:id="@+id/backBTN"
                     android:layout_width="116dp"
                     android:layout_height="wrap_content"
-                    android:text="Arms"
-                    tools:layout_editor_absoluteX="25dp"
-                    tools:layout_editor_absoluteY="316dp" />
-
-                <Button
-                    android:id="@+id/buttonBack"
-                    android:layout_width="116dp"
-                    android:layout_height="wrap_content"
+                    android:onClick="categorySelected"
                     android:text="Back"
                     tools:layout_editor_absoluteX="151dp"
                     tools:layout_editor_absoluteY="316dp" />
 
                 <Button
-                    android:id="@+id/buttonChest"
+                    android:id="@+id/armsBTN"
                     android:layout_width="116dp"
                     android:layout_height="wrap_content"
+                    android:onClick="categorySelected"
+                    android:text="Arms"
+                    tools:layout_editor_absoluteX="25dp"
+                    tools:layout_editor_absoluteY="316dp" />
+
+                <Button
+                    android:id="@+id/chestBTN"
+                    android:layout_width="116dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="categorySelected"
                     android:text="Chest"
                     tools:layout_editor_absoluteX="276dp"
                     tools:layout_editor_absoluteY="316dp" />
@@ -106,27 +112,30 @@
                 android:gravity="center">
 
                 <ImageButton
-                    android:id="@+id/imageButtonLegs"
+                    android:id="@+id/legsIMG"
                     android:layout_width="116dp"
                     android:layout_height="163dp"
+                    android:onClick="categorySelected"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/legs"
                     tools:layout_editor_absoluteX="151dp"
                     tools:layout_editor_absoluteY="411dp" />
 
                 <ImageButton
-                    android:id="@+id/imageButtonCore"
+                    android:id="@+id/coreIMG"
                     android:layout_width="116dp"
                     android:layout_height="163dp"
+                    android:onClick="categorySelected"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/core"
                     tools:layout_editor_absoluteX="25dp"
                     tools:layout_editor_absoluteY="411dp" />
 
                 <ImageButton
-                    android:id="@+id/imageButtonShoulders"
+                    android:id="@+id/shouldersIMG"
                     android:layout_width="116dp"
                     android:layout_height="163dp"
+                    android:onClick="categorySelected"
                     android:scaleType="fitXY"
                     app:srcCompat="@drawable/shoulders"
                     tools:layout_editor_absoluteX="279dp"
@@ -140,25 +149,28 @@
                 android:gravity="center">
 
                 <Button
-                    android:id="@+id/buttonLegs"
+                    android:id="@+id/legsBTN"
                     android:layout_width="116dp"
                     android:layout_height="wrap_content"
+                    android:onClick="categorySelected"
                     android:text="Legs"
                     tools:layout_editor_absoluteX="151dp"
                     tools:layout_editor_absoluteY="574dp" />
 
                 <Button
-                    android:id="@+id/buttonCore"
+                    android:id="@+id/coreBTN"
                     android:layout_width="116dp"
                     android:layout_height="wrap_content"
+                    android:onClick="categorySelected"
                     android:text="Core"
                     tools:layout_editor_absoluteX="25dp"
                     tools:layout_editor_absoluteY="574dp" />
 
                 <Button
-                    android:id="@+id/buttonShoulders"
+                    android:id="@+id/shouldersBTN"
                     android:layout_width="116dp"
                     android:layout_height="wrap_content"
+                    android:onClick="categorySelected"
                     android:text="Shoulders"
                     tools:layout_editor_absoluteX="279dp"
                     tools:layout_editor_absoluteY="574dp" />

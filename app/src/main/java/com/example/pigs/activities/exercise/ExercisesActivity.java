@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -37,14 +38,19 @@ public class ExercisesActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private TextView textView;
     private View categoriesLayout;
+    private Button backButton;
+    private TextView selectedCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
+        editText = (EditText) findViewById(R.id.editText);
         categoriesLayout = findViewById(R.id.categoriesLayout);
         textView = (TextView) findViewById(R.id.exercise_textView);
+        backButton = findViewById(R.id.backButton);
+        selectedCategory = findViewById(R.id.selectedCategory);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -120,6 +126,95 @@ public class ExercisesActivity extends AppCompatActivity {
         });
     }
 
+    public void categorySelected(View v){
+        editText.setVisibility(EditText.GONE);
+        categoriesLayout.setVisibility(View.GONE);
+        backButton.setVisibility(Button.VISIBLE);
+        selectedCategory.setVisibility(TextView.VISIBLE);
+        switch (v.getId()) {
+            case (R.id.backIMG): {
+                selectedCategory.setText("Back");
+                AsyncTask task = new FetchExercisesByCategoryTask();
+                task.execute();
+                break;
+            }
+            case (R.id.backBTN): {
+                selectedCategory.setText("Back");
+                AsyncTask task = new FetchExercisesByCategoryTask();
+                task.execute();
+                break;
+            }
+            case (R.id.armsIMG): {
+                selectedCategory.setText("Arms");
+                AsyncTask task = new FetchExercisesByCategoryTask();
+                task.execute();
+                break;
+            }
+            case (R.id.armsBTN): {
+                selectedCategory.setText("Arms");
+                AsyncTask task = new FetchExercisesByCategoryTask();
+                task.execute();
+                break;
+            }
+            case (R.id.chestIMG): {
+                selectedCategory.setText("Chest");
+                AsyncTask task = new FetchExercisesByCategoryTask();
+                task.execute();
+                break;
+            }
+            case (R.id.chestBTN): {
+                selectedCategory.setText("Chest");
+                AsyncTask task = new FetchExercisesByCategoryTask();
+                task.execute();
+                break;
+            }
+            case (R.id.legsIMG): {
+                selectedCategory.setText("Legs");
+                AsyncTask task = new FetchExercisesByCategoryTask();
+                task.execute();
+                break;
+            }
+            case (R.id.legsBTN): {
+                selectedCategory.setText("Legs");
+                AsyncTask task = new FetchExercisesByCategoryTask();
+                task.execute();
+                break;
+            }
+            case (R.id.coreIMG): {
+                selectedCategory.setText("Core");
+                AsyncTask task = new FetchExercisesByCategoryTask();
+                task.execute();
+                break;
+            }
+            case (R.id.coreBTN): {
+                selectedCategory.setText("Core");
+                AsyncTask task = new FetchExercisesByCategoryTask();
+                task.execute();
+                break;
+            }
+            case (R.id.shouldersIMG): {
+                selectedCategory.setText("Shoulders");
+                AsyncTask task = new FetchExercisesByCategoryTask();
+                task.execute();
+                break;
+            }
+            case (R.id.shouldersBTN): {
+                selectedCategory.setText("Shoulders");
+                AsyncTask task = new FetchExercisesByCategoryTask();
+                task.execute();
+                break;
+            }
+        }
+    }
+
+    public void goBack(View button){
+        editText.setVisibility(EditText.VISIBLE);
+        categoriesLayout.setVisibility(View.VISIBLE);
+        selectedCategory.setVisibility(TextView.GONE);
+        backButton.setVisibility(Button.GONE);
+        textView.setVisibility(TextView.GONE);
+    }
+
     private class FetchExercisesTask extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... params) {
@@ -140,6 +235,31 @@ public class ExercisesActivity extends AppCompatActivity {
                 for (Exercise element : list) {
                     textView.append(element.getName() + "\n");
                 }
+            }
+        }
+    }
+
+    private class FetchExercisesByCategoryTask extends AsyncTask<Object, Void, String> {
+        @Override
+        protected String doInBackground(Object... params) {
+            TextView category = (TextView)findViewById(R.id.selectedCategory);
+            String ex_category = category.getText().toString();
+            return new ExerciseController().getExercisesByCategory(ex_category);
+        }
+
+        @Override
+        protected void onPostExecute(String items) {
+            Gson gson = new Gson();
+            //Exercise ex = gson.fromJson(items, Exercise.class);
+            if(items != null) {
+                List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>() {
+                }.getType());
+                textView.setText("");
+
+                for (Exercise element : list) {
+                    textView.append(element.getName() + "\n");
+                }
+                textView.setVisibility(TextView.VISIBLE);
             }
         }
     }
