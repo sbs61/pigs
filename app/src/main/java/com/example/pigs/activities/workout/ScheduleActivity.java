@@ -79,7 +79,7 @@ public class ScheduleActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "" + dayOfMonth + "." + (month+1) + "." + year, 5).show();
                 TextView foundWorkout = (TextView) findViewById(R.id.foundWorkout);
                 if(dayOfMonth == day && (month+1) == month2 && year == year2) {
-                    foundWorkout.setText("Bench Press");
+                    foundWorkout.setText("Chest workout");
                 }
                 else {
                     foundWorkout.setText("No Workout Found");
