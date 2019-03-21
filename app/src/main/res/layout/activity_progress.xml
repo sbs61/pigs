@@ -39,6 +39,15 @@
             android:textStyle="bold" />
 
         <EditText
+            android:id="@+id/exercise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="@string/exerciseName"
+            android:ems="10"
+            android:hint="@string/exerciseName"
+            android:inputType="text" />
+
+        <EditText
             android:id="@+id/weights"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,6 +73,14 @@
             android:ems="10"
             android:hint="@string/sets"
             android:inputType="number" />
+
+        <TextView
+            android:id="@+id/progressDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select A Date "
+            android:padding="5px"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/add_progress_button"

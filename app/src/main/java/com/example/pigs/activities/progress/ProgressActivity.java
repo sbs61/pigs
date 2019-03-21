@@ -1,6 +1,9 @@
 package com.example.pigs.activities.progress;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -8,27 +11,37 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import com.example.pigs.MainActivity;
 import com.example.pigs.R;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
+import com.example.pigs.controllers.WorkoutController;
 import com.example.pigs.entities.Exercise;
+import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ProgressActivity extends AppCompatActivity {
+    private static final String TAG = "ProgressActivity";
     private ExerciseController exerciseController;
-
+    private TextView mDisplayDate;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
     private DrawerLayout drawerLayout;
 
     @Override
@@ -76,6 +89,37 @@ public class ProgressActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+
+        // Date Picker
+        mDisplayDate = (TextView) findViewById(R.id.progressDate);
+        mDisplayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        ProgressActivity.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        mDateSetListener,
+                        year,month,day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
+
+                String date = year + "-" + month + "-" + day;
+                mDisplayDate.setText(date);
+            }
+        };
     }
 
     public void addProgress(View button){
@@ -101,21 +145,24 @@ public class ProgressActivity extends AppCompatActivity {
     private class addProgressTask extends AsyncTask<Object, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Object... params) {
+            EditText e = (EditText) findViewById(R.id.exercise);
+            String exercise = e.getText().toString();
             EditText w = (EditText) findViewById(R.id.weights);
-            String weights = w.getText().toString();
+            double weights = Double.parseDouble(w.getText().toString());
             EditText r = (EditText) findViewById(R.id.reps);
-            String reps = r.getText().toString();
+            int reps = Integer.parseInt(r.getText().toString());
             EditText s = (EditText) findViewById(R.id.sets);
-            String sets = s.getText().toString();
-            /*
-            if(weights != "" && reps != "" && sets != "") {
-                weights.setText("");
-                reps.setText("");
-                sets.setText("");
-                return new ExerciseController().addProgress(weights, reps, sets);
-            }
-            */
-            return null;
+            int sets = Integer.parseInt(s.getText().toString());
+
+            String date = mDisplayDate.getText().toString();
+
+            ExerciseController ec = new ExerciseController();
+            String jsonEx = ec.getExercises(exercise);
+            Gson gson = new Gson();
+            Exercise[] ex = gson.fromJson(jsonEx, Exercise[].class);
+
+            WorkoutController wc = new WorkoutController();
+            return wc.createProgress(ex[0].getName(), reps, sets, weights, date);
         }
 
         @Override
