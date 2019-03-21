@@ -26,12 +26,13 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="?attr/colorPrimaryDark"
+            android:background="#25448C"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="#25448C"
                 android:gravity="center|end"
                 android:orientation="horizontal"
                 android:paddingRight="8dp">
