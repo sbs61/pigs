@@ -25,6 +25,7 @@ import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.entities.Exercise;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -56,6 +57,11 @@ public class GraphActivity extends AppCompatActivity {
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
 
+        // set manual Y bounds
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(30);
+
         // you can directly pass Date objects to DataPoint-Constructor
         // this will convert the Date to double via Date#getTime()
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
@@ -68,8 +74,10 @@ public class GraphActivity extends AppCompatActivity {
         graph.addSeries(series);
 
         // set date label formatter
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this));
-        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+        GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
+        gridLabel.setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this));
+        gridLabel.setNumHorizontalLabels(4); // only 4 because of the space
+        gridLabel.setNumVerticalLabels(6);
 
         // set manual x bounds to have nice steps
         graph.getViewport().setMinX(d1.getTime());
