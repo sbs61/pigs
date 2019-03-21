@@ -27,67 +27,78 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="?attr/colorPrimaryDark"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center|end"
+                android:orientation="horizontal"
+                android:paddingRight="8dp">
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_account_circle_black_24dp"
+                    android:onClick="goToLogin"
+                    app:srcCompat="@drawable/ic_account_circle_black_24dp" />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
 
 
         <TextView
-            android:id="@+id/addProgressTitle"
+            android:id="@+id/loginTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/addProgress"
+            android:text="@string/login"
             android:textSize="36sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/weights"
+            android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="@string/exerciseName"
             android:ems="10"
-            android:hint="@string/weights"
-            android:inputType="number" />
+            android:hint="@string/username"
+            android:inputType="text" />
 
         <EditText
-            android:id="@+id/reps"
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="@string/exerciseCategory"
+            android:autofillHints="@string/exerciseName"
             android:ems="10"
-            android:hint="@string/reps"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/sets"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="@string/exerciseCategory"
-            android:ems="10"
-            android:hint="@string/sets"
-            android:inputType="number" />
+            android:hint="@string/password"
+            android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/add_progress_button"
+            android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="addProgress"
+            android:onClick="userLogin"
             android:padding="18dp"
-            android:text="@string/addProgress"
+            android:text="@string/login"
             android:textSize="18sp" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/register_text"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Don't have an account?" />
 
-            <Button
-                android:id="@+id/viewProgress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="goToViewProgress"
-                android:text="View Progress"
-                android:textSize="18sp" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="goToRegister"
+            android:padding="18dp"
+            android:text="@string/register"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
