@@ -10,23 +10,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
-import android.widget.CalendarView;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
-import com.example.pigs.MainActivity;
 import com.example.pigs.R;
 import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
-import com.example.pigs.entities.Exercise;
-
-import java.io.IOException;
 
 public class CreateExerciseActivity extends AppCompatActivity {
     private ExerciseController exerciseController;
@@ -49,12 +41,14 @@ public class CreateExerciseActivity extends AppCompatActivity {
         dropdown.setAdapter(adapter);
         dropdown.setSelection(adapter.getCount());
 
+        // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
+        // Create drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -67,8 +61,7 @@ public class CreateExerciseActivity extends AppCompatActivity {
                         // close drawer when item is tapped
                         drawerLayout.closeDrawers();
 
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
+                        // Handle navigation
                         switch(menuItem.getItemId()){
                             case R.id.nav_exercises:{
                                 Intent i = new Intent(CreateExerciseActivity.this, ExercisesActivity.class);
@@ -91,11 +84,13 @@ public class CreateExerciseActivity extends AppCompatActivity {
                 });
     }
 
+    // Create exercise button handler executes an Asyncronous task
     public void createExercise(View button){
         AsyncTask task = new CreateExerciseActivity.CreateExerciseTask();
         task.execute();
     }
 
+    // Menu button handler
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -106,6 +101,7 @@ public class CreateExerciseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Create a new exercise
     private class CreateExerciseTask extends AsyncTask<Object, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Object... params) {
@@ -114,6 +110,8 @@ public class CreateExerciseActivity extends AppCompatActivity {
             EditText category = (EditText) findViewById(R.id.exercise_category);
             Spinner dropdown = (Spinner) findViewById(R.id.spinner);
             String exercise_category = dropdown.getSelectedItem().toString();
+
+            // Validate fields are not empty
             if(exercise_name != "" && exercise_category != "") {
                 name.setText("");
                 dropdown.post(new Runnable() {
@@ -122,6 +120,8 @@ public class CreateExerciseActivity extends AppCompatActivity {
                         dropdown.setSelection(6);
                     }
                 });
+
+                // Call create exercise function from controller
                 return new ExerciseController().createExercise(exercise_name, exercise_category);
             }
             return null;

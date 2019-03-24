@@ -49,12 +49,14 @@ public class ProgressActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
 
+        // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
+        // Create drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -67,8 +69,7 @@ public class ProgressActivity extends AppCompatActivity {
                         // close drawer when item is tapped
                         drawerLayout.closeDrawers();
 
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
+                        // Handle navigation
                         switch(menuItem.getItemId()){
                             case R.id.nav_exercises:{
                                 Intent i = new Intent(ProgressActivity.this, ExercisesActivity.class);
@@ -122,16 +123,19 @@ public class ProgressActivity extends AppCompatActivity {
         };
     }
 
+    // Add progress button handler
     public void addProgress(View button){
         AsyncTask task = new ProgressActivity.addProgressTask();
         task.execute();
     }
 
+    // View progress button handler, go to GraphActivity
     public void goToViewProgress(View button){
         Intent i = new Intent(ProgressActivity.this, GraphActivity.class);
         startActivity(i);
     }
 
+    // Menu button handler
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -142,6 +146,7 @@ public class ProgressActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Async task to add progress
     private class addProgressTask extends AsyncTask<Object, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Object... params) {

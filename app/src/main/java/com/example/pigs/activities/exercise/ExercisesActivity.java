@@ -47,19 +47,21 @@ public class ExercisesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
+        // initiate variables
         editText = (EditText) findViewById(R.id.editText);
         categoriesLayout = findViewById(R.id.categoriesLayout);
         textView = (TextView) findViewById(R.id.exercise_textView);
         backButton = findViewById(R.id.backButton);
         selectedCategory = findViewById(R.id.selectedCategory);
 
+        // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-
+        // Create drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -72,8 +74,7 @@ public class ExercisesActivity extends AppCompatActivity {
                         // close drawer when item is tapped
                         drawerLayout.closeDrawers();
 
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
+                        // Handle navigation
                         switch(menuItem.getItemId()){
                             case R.id.nav_workouts:{
                                 Intent i = new Intent(ExercisesActivity.this, CreateWorkoutActivity.class);
@@ -95,8 +96,10 @@ public class ExercisesActivity extends AppCompatActivity {
                     }
                 });
 
+        // Handle text field inputs
         editText = (EditText) findViewById(R.id.editText);
         editText.addTextChangedListener(new TextWatcher() {
+            // New async task to search for exercises by string
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 AsyncTask task = new FetchExercisesTask();
@@ -127,11 +130,15 @@ public class ExercisesActivity extends AppCompatActivity {
         });
     }
 
+    // Handle category Selected
     public void categorySelected(View v){
+        // Swap views
         editText.setVisibility(EditText.GONE);
         categoriesLayout.setVisibility(View.GONE);
         backButton.setVisibility(Button.VISIBLE);
         selectedCategory.setVisibility(TextView.VISIBLE);
+
+        // Check which category was selected and display exercises accordingly
         switch (v.getId()) {
             case (R.id.backIMG): {
                 selectedCategory.setText("Back");
@@ -208,7 +215,9 @@ public class ExercisesActivity extends AppCompatActivity {
         }
     }
 
+    // Go back button handler
     public void goBack(View button){
+        // Swap views
         editText.setVisibility(EditText.VISIBLE);
         categoriesLayout.setVisibility(View.VISIBLE);
         selectedCategory.setVisibility(TextView.GONE);
@@ -216,16 +225,19 @@ public class ExercisesActivity extends AppCompatActivity {
         textView.setVisibility(TextView.GONE);
     }
 
+    // Handler for create exercise button, initiates CreateExercisesActivity
     public void goToCreateExercise(View button){
         Intent i = new Intent(ExercisesActivity.this, CreateExerciseActivity.class);
         startActivity(i);
     }
 
+    // Go to Login page button handler
     public void goToLogin(View button){
         Intent i = new Intent(ExercisesActivity.this, LoginActivity.class);
         startActivity(i);
     }
 
+    // Fetch exercises by name with async task
     private class FetchExercisesTask extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... params) {
@@ -250,6 +262,7 @@ public class ExercisesActivity extends AppCompatActivity {
         }
     }
 
+    // Fetch exercises by category with  async task
     private class FetchExercisesByCategoryTask extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... params) {
@@ -275,6 +288,7 @@ public class ExercisesActivity extends AppCompatActivity {
         }
     }
 
+    // Menu button handler
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

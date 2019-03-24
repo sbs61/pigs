@@ -46,6 +46,8 @@ public class GraphActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
 
+        // Setup dates
+        // TODO: Fetch dates from workouts
         Calendar calendar = Calendar.getInstance();
         Date d1 = calendar.getTime();
         calendar.add(Calendar.DATE, 1);
@@ -62,8 +64,7 @@ public class GraphActivity extends AppCompatActivity {
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(30);
 
-        // you can directly pass Date objects to DataPoint-Constructor
-        // this will convert the Date to double via Date#getTime()
+        // Create data points for the graph
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
                 new DataPoint(d1, 8),
                 new DataPoint(d2, 9),
@@ -71,6 +72,7 @@ public class GraphActivity extends AppCompatActivity {
                 new DataPoint(d4, 15)
         });
 
+        // add points to graph
         graph.addSeries(series);
 
         // set date label formatter
@@ -79,21 +81,22 @@ public class GraphActivity extends AppCompatActivity {
         gridLabel.setNumHorizontalLabels(4); // only 4 because of the space
         gridLabel.setNumVerticalLabels(6);
 
-        // set manual x bounds to have nice steps
+        // set manual X bounds
         graph.getViewport().setMinX(d1.getTime());
         graph.getViewport().setMaxX(d3.getTime());
         graph.getViewport().setXAxisBoundsManual(true);
 
-        // as we use dates as labels, the human rounding to nice readable numbers
-        // is not necessary
+        // Round numbers
         graph.getGridLabelRenderer().setHumanRounding(false);
 
+        // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
+        // Create drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -106,8 +109,7 @@ public class GraphActivity extends AppCompatActivity {
                         // close drawer when item is tapped
                         drawerLayout.closeDrawers();
 
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
+                        // Handle navigation
                         switch(menuItem.getItemId()){
                             case R.id.nav_exercises:{
                                 Intent i = new Intent(GraphActivity.this, ExercisesActivity.class);
@@ -135,6 +137,7 @@ public class GraphActivity extends AppCompatActivity {
                 });
     }
 
+    // Menu button handler
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

@@ -36,12 +36,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Insert the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
+        // Setup drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -54,8 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                         // close drawer when item is tapped
                         drawerLayout.closeDrawers();
 
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
+                        // Handle navigation
                         switch(menuItem.getItemId()){
                             case R.id.nav_exercises:{
                                 Intent i = new Intent(LoginActivity.this, ExercisesActivity.class);
@@ -83,11 +84,13 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    // Initiate register activity when Register button is clicked
     public void goToRegister(View button){
         Intent i = new Intent(LoginActivity.this, RegistrationActivity.class);
         startActivity(i);
     }
 
+    // Handler for login button, take input from username and password fields
     public void userLogin(View button){
         EditText username = (EditText) findViewById(R.id.username);
         String login_username = username.getText().toString();
@@ -98,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    // Menu button handler
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
