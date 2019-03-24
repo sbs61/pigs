@@ -178,8 +178,8 @@ public class GraphActivity extends AppCompatActivity {
 
                 /*
                 graph.getViewport().setMinX(minDate.getTime());
-                graph.getViewport().setMinY(minWeights-20);
                 */
+                graph.getViewport().setMinY(minWeights-10);
 
             }
         }
