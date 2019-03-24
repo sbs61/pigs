@@ -27,12 +27,14 @@ public class ScheduleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
+        // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
+        // Create drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -45,8 +47,7 @@ public class ScheduleActivity extends AppCompatActivity {
                         // close drawer when item is tapped
                         drawerLayout.closeDrawers();
 
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
+                        // Handle navigation
                         switch(menuItem.getItemId()){
                             case R.id.nav_exercises:{
                                 Intent i = new Intent(ScheduleActivity.this, ExercisesActivity.class);
@@ -68,16 +69,23 @@ public class ScheduleActivity extends AppCompatActivity {
                     }
                 });
 
+        // Create day to use for now
+        // TODO: Fetch date from workout to compare to selected date on calendar
         final int day = 25;
         final int month2 = 3;
         final int year2 = 2019;
+
+        // Initiate variable for calendar
         CalendarView calendarView = (CalendarView) findViewById(R.id.CalendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
+            // Select day handler
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                // display the selected date
                 Toast.makeText(getApplicationContext(), "" + dayOfMonth + "." + (month+1) + "." + year, 5).show();
                 TextView foundWorkout = (TextView) findViewById(R.id.foundWorkout);
+                // Check if selected date matches workout date and setText accordingly
                 if(dayOfMonth == day && (month+1) == month2 && year == year2) {
                     foundWorkout.setText("Chest workout");
                 }
@@ -88,6 +96,7 @@ public class ScheduleActivity extends AppCompatActivity {
         });
     }
 
+    // Menu button handler
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
