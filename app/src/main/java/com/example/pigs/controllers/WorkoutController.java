@@ -60,4 +60,27 @@ public class WorkoutController {
         return false;
     }
 
+    public String getProgress(Integer userId) {
+        String url = "https://hugbun2.herokuapp.com/progress?uid="+userId;
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        String jsonString = null;
+
+        try {
+            Response res = client.newCall(request).execute();
+            if (res.isSuccessful()){
+                jsonString = res.body().string();
+                Log.e(TAG, res.toString());
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Exception caught: ", e);
+        }
+
+        return jsonString;
+    }
+
 }

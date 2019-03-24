@@ -32,10 +32,12 @@ import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.controllers.WorkoutController;
 import com.example.pigs.entities.Exercise;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class ProgressActivity extends AppCompatActivity {
     private static final String TAG = "ProgressActivity";

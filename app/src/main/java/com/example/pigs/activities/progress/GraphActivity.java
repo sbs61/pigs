@@ -23,7 +23,11 @@ import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
+import com.example.pigs.controllers.WorkoutController;
 import com.example.pigs.entities.Exercise;
+import com.example.pigs.entities.Progress;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
@@ -35,12 +39,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class GraphActivity extends AppCompatActivity {
     private ExerciseController exerciseController;
 
     private DrawerLayout drawerLayout;
-
+    private GraphView graph;
+    private GridLabelRenderer gridLabel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,37 +63,35 @@ public class GraphActivity extends AppCompatActivity {
         calendar.add(Calendar.DATE, 1);
         Date d4 = calendar.getTime();
 
-        GraphView graph = (GraphView) findViewById(R.id.graph);
+        graph = (GraphView) findViewById(R.id.graph);
 
         // set manual Y bounds
+        /*
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(30);
-
-        // Create data points for the graph
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(d1, 8),
-                new DataPoint(d2, 9),
-                new DataPoint(d3, 12),
-                new DataPoint(d4, 15)
-        });
-
-        // add points to graph
-        graph.addSeries(series);
+        graph.getViewport().setMaxY(150);
+        */
 
         // set date label formatter
-        GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
+        gridLabel = graph.getGridLabelRenderer();
         gridLabel.setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this));
         gridLabel.setNumHorizontalLabels(4); // only 4 because of the space
         gridLabel.setNumVerticalLabels(6);
 
         // set manual X bounds
+        /*
+        graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setMinX(d1.getTime());
         graph.getViewport().setMaxX(d3.getTime());
-        graph.getViewport().setXAxisBoundsManual(true);
+        */
+
+
+        AsyncTask task = new GraphActivity.FetchProgressTask();
+        task.execute();
 
         // Round numbers
-        graph.getGridLabelRenderer().setHumanRounding(false);
+        graph.getGridLabelRenderer().setHumanRounding(true, true);
+        graph.getGridLabelRenderer().setPadding(32);
 
         // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -135,6 +139,50 @@ public class GraphActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+    // Fetch exercises by name with async task
+    private class FetchProgressTask extends AsyncTask<Object, Void, String> {
+        @Override
+        protected String doInBackground(Object... params) {
+            Integer userId = 1;
+            return new WorkoutController().getProgress(userId);
+        }
+
+        @Override
+        protected void onPostExecute(String items) {
+            Gson gson = new Gson();
+            //Exercise ex = gson.fromJson(items, Exercise.class);
+            if(items != null) {
+                List<Progress> list = gson.fromJson(items, new TypeToken<List<Progress>>() {
+                }.getType());
+
+                Calendar calendar = Calendar.getInstance();
+                Date minDate = calendar.getTime();
+                double minWeights = 0;
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
+                for (Progress element : list) {
+                    // Add data points to graph
+                    series.appendData(new DataPoint(element.getDate().getTime(), element.getWeight()), true, 40);
+                    minDate = element.getDate();
+                    minWeights = element.getWeight();
+                }
+
+                series.setDrawDataPoints(true);
+                graph.addSeries(series);
+
+                gridLabel = graph.getGridLabelRenderer();
+                gridLabel.setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this));
+                gridLabel.setNumHorizontalLabels(4); // only 4 because of the space
+                gridLabel.setNumVerticalLabels(6);
+
+                /*
+                graph.getViewport().setMinX(minDate.getTime());
+                graph.getViewport().setMinY(minWeights-20);
+                */
+
+            }
+        }
     }
 
     // Menu button handler
