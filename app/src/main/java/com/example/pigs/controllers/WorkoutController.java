@@ -25,13 +25,7 @@ public class WorkoutController {
     public static final String TAG = MainActivity.class.getSimpleName();
 
     public Boolean createProgress(String name, int reps, int sets, Double weight, String date) {
-        Date d = null;
-        try {
-            d = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Progress pr = new Progress(null, 1L, 1L, sets, reps, weight, d);
+        Progress pr = new Progress(null, 1L, 1L, sets, reps, weight, date);
         String url = "https://hugbun2.herokuapp.com/progress";
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(pr);

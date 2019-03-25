@@ -162,9 +162,15 @@ public class GraphActivity extends AppCompatActivity {
                 double minWeights = 0;
                 LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
                 for (Progress element : list) {
+                    Date date = null;
+                    try {
+                        date = new SimpleDateFormat("yyyy-MM-dd").parse(element.getDate());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     // Add data points to graph
-                    series.appendData(new DataPoint(element.getDate().getTime(), element.getWeight()), true, 40);
-                    minDate = element.getDate();
+                    series.appendData(new DataPoint(date.getTime(), element.getWeight()), true, 40);
+                    minDate = date;
                     minWeights = element.getWeight();
                 }
 

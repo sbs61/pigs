@@ -10,9 +10,9 @@ public class Progress {
     private int sets;
     private int reps;
     private double weight;
-    private Date date;
+    private String date;
 
-    public Progress(Long id, Long exerciseId, Long userId, int sets, int reps, double weight, Date date) {
+    public Progress(Long id, Long exerciseId, Long userId, int sets, int reps, double weight, String date) {
         this.id = id;
         this.exerciseId = exerciseId;
         this.userId = userId;
@@ -62,8 +62,8 @@ public class Progress {
 
     public void setWeight(double weight ) {this.weight = weight; }
 
-    public Date getDate() {return date; }
+    public String getDate() {return date; }
 
-    public void setDate(Date date) {this.date = date; }
+    public void setDate(String date) {this.date = date; }
 
 }

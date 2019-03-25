@@ -119,8 +119,14 @@ public class ProgressActivity extends AppCompatActivity {
                 month = month + 1;
                 Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
 
-                String date = year + "-" + month + "-" + day;
-                mDisplayDate.setText(date);
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = null;
+                try {
+                    date = df.parse(year + "-" + month + "-" + day);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                mDisplayDate.setText(df.format(date));
             }
         };
     }
