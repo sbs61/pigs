@@ -111,7 +111,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         // Date Picker
-        mDisplayDate = (TextView) findViewById(R.id.workoutDate);
+        mDisplayDate = findViewById(R.id.workoutDate);
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

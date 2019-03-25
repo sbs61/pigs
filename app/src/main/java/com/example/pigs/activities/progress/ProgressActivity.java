@@ -94,7 +94,7 @@ public class ProgressActivity extends AppCompatActivity {
                 });
 
         // Date Picker
-        mDisplayDate = (TextView) findViewById(R.id.progressDate);
+        mDisplayDate = findViewById(R.id.progressDate);
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
