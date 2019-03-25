@@ -1,5 +1,6 @@
 package com.example.pigs.activities.exercise;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -47,10 +48,10 @@ public class ExercisesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
-        // initiate variables
-        editText = (EditText) findViewById(R.id.editText);
+        // Initiate variables
+        editText = findViewById(R.id.editText);
         categoriesLayout = findViewById(R.id.categoriesLayout);
-        textView = (TextView) findViewById(R.id.exercise_textView);
+        textView = findViewById(R.id.exercise_textView);
         backButton = findViewById(R.id.backButton);
         selectedCategory = findViewById(R.id.selectedCategory);
 
@@ -97,25 +98,46 @@ public class ExercisesActivity extends AppCompatActivity {
                 });
 
         // Handle text field inputs
-        editText = (EditText) findViewById(R.id.editText);
         editText.addTextChangedListener(new TextWatcher() {
             // New async task to search for exercises by string
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                AsyncTask task = new FetchExercisesTask();
+                // Fetch exercises by name with async task
+                @SuppressLint("StaticFieldLeak")
+                AsyncTask<Object, Void, String> task = new AsyncTask<Object, Void, String>() {
+
+                    @Override
+                    @SuppressLint("WrongThread")
+                    protected String doInBackground(Object... params) {
+                        String ex_name = editText.getText().toString();
+                        return new ExerciseController().getExercises(ex_name);
+                    }
+
+                    @Override
+                    protected void onPostExecute(String items) {
+                        Gson gson = new Gson();
+                        if(items != null) {
+                            List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>() {}.getType());
+                            textView.setText("");
+
+                            for (Exercise element : list) {
+                                textView.append(element.getName() + "\n");
+                            }
+                        }
+                    }
+                };
+
                 task.execute();
             }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                // TODO Auto-generated method stub
             }
 
             @Override
             public void afterTextChanged(Editable s) {
 
-                // TODO Auto-generated method stub
                 String searchQuery = editText.getText().toString();
                 if(searchQuery.length() == 0){
                     textView.setVisibility(TextView.GONE);
@@ -125,7 +147,6 @@ public class ExercisesActivity extends AppCompatActivity {
                     textView.setVisibility(TextView.VISIBLE);
                     categoriesLayout.setVisibility(View.GONE);
                 }
-                //todo leita úr gagnagrunninum af exercises með valueinu og setja results í listann, gæti þurft að cleara listann í hvert skipti?
             }
         });
     }
@@ -138,81 +159,41 @@ public class ExercisesActivity extends AppCompatActivity {
         backButton.setVisibility(Button.VISIBLE);
         selectedCategory.setVisibility(TextView.VISIBLE);
 
+        int id = v.getId();
         // Check which category was selected and display exercises accordingly
-        switch (v.getId()) {
-            case (R.id.backIMG): {
-                selectedCategory.setText("Back");
-                AsyncTask task = new FetchExercisesByCategoryTask();
-                task.execute();
-                break;
+        if(id == R.id.backIMG || id == R.id.backBTN) selectedCategory.setText("Back");
+        else if(id == R.id.armsIMG || id == R.id.armsBTN) selectedCategory.setText("Arms");
+        else if(id == R.id.chestIMG || id == R.id.chestBTN) selectedCategory.setText("Chest");
+        else if(id == R.id.legsIMG || id == R.id.legsBTN) selectedCategory.setText("Legs");
+        else if(id == R.id.coreIMG || id == R.id.coreBTN) selectedCategory.setText("Core");
+        else if(id == R.id.shouldersIMG || id == R.id.shouldersBTN) selectedCategory.setText("Shoulders");
+
+        // Fetch exercises by category with  async task
+        @SuppressLint("StaticFieldLeak")
+        AsyncTask<Object, Void, String> task = new AsyncTask<Object, Void, String>() {
+            @Override
+            protected String doInBackground(Object... params) {
+                String ex_category = selectedCategory.getText().toString();
+                return new ExerciseController().getExercisesByCategory(ex_category);
             }
-            case (R.id.backBTN): {
-                selectedCategory.setText("Back");
-                AsyncTask task = new FetchExercisesByCategoryTask();
-                task.execute();
-                break;
+
+            @Override
+            protected void onPostExecute(String items) {
+                Gson gson = new Gson();
+                //Exercise ex = gson.fromJson(items, Exercise.class);
+                if(items != null) {
+                    List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>() {}.getType());
+                    textView.setText("");
+
+                    for (Exercise element : list) {
+                        textView.append(element.getName() + "\n");
+                    }
+                    textView.setVisibility(TextView.VISIBLE);
+                }
             }
-            case (R.id.armsIMG): {
-                selectedCategory.setText("Arms");
-                AsyncTask task = new FetchExercisesByCategoryTask();
-                task.execute();
-                break;
-            }
-            case (R.id.armsBTN): {
-                selectedCategory.setText("Arms");
-                AsyncTask task = new FetchExercisesByCategoryTask();
-                task.execute();
-                break;
-            }
-            case (R.id.chestIMG): {
-                selectedCategory.setText("Chest");
-                AsyncTask task = new FetchExercisesByCategoryTask();
-                task.execute();
-                break;
-            }
-            case (R.id.chestBTN): {
-                selectedCategory.setText("Chest");
-                AsyncTask task = new FetchExercisesByCategoryTask();
-                task.execute();
-                break;
-            }
-            case (R.id.legsIMG): {
-                selectedCategory.setText("Legs");
-                AsyncTask task = new FetchExercisesByCategoryTask();
-                task.execute();
-                break;
-            }
-            case (R.id.legsBTN): {
-                selectedCategory.setText("Legs");
-                AsyncTask task = new FetchExercisesByCategoryTask();
-                task.execute();
-                break;
-            }
-            case (R.id.coreIMG): {
-                selectedCategory.setText("Core");
-                AsyncTask task = new FetchExercisesByCategoryTask();
-                task.execute();
-                break;
-            }
-            case (R.id.coreBTN): {
-                selectedCategory.setText("Core");
-                AsyncTask task = new FetchExercisesByCategoryTask();
-                task.execute();
-                break;
-            }
-            case (R.id.shouldersIMG): {
-                selectedCategory.setText("Shoulders");
-                AsyncTask task = new FetchExercisesByCategoryTask();
-                task.execute();
-                break;
-            }
-            case (R.id.shouldersBTN): {
-                selectedCategory.setText("Shoulders");
-                AsyncTask task = new FetchExercisesByCategoryTask();
-                task.execute();
-                break;
-            }
-        }
+        };
+
+        task.execute();
     }
 
     // Go back button handler
@@ -235,57 +216,6 @@ public class ExercisesActivity extends AppCompatActivity {
     public void goToLogin(View button){
         Intent i = new Intent(ExercisesActivity.this, LoginActivity.class);
         startActivity(i);
-    }
-
-    // Fetch exercises by name with async task
-    private class FetchExercisesTask extends AsyncTask<Object, Void, String> {
-        @Override
-        protected String doInBackground(Object... params) {
-            EditText name = (EditText) findViewById(R.id.editText);
-            String ex_name = name.getText().toString();
-            return new ExerciseController().getExercises(ex_name);
-        }
-
-        @Override
-        protected void onPostExecute(String items) {
-            Gson gson = new Gson();
-            //Exercise ex = gson.fromJson(items, Exercise.class);
-            if(items != null) {
-                List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>() {
-                }.getType());
-                textView.setText("");
-
-                for (Exercise element : list) {
-                    textView.append(element.getName() + "\n");
-                }
-            }
-        }
-    }
-
-    // Fetch exercises by category with  async task
-    private class FetchExercisesByCategoryTask extends AsyncTask<Object, Void, String> {
-        @Override
-        protected String doInBackground(Object... params) {
-            TextView category = (TextView)findViewById(R.id.selectedCategory);
-            String ex_category = category.getText().toString();
-            return new ExerciseController().getExercisesByCategory(ex_category);
-        }
-
-        @Override
-        protected void onPostExecute(String items) {
-            Gson gson = new Gson();
-            //Exercise ex = gson.fromJson(items, Exercise.class);
-            if(items != null) {
-                List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>() {
-                }.getType());
-                textView.setText("");
-
-                for (Exercise element : list) {
-                    textView.append(element.getName() + "\n");
-                }
-                textView.setVisibility(TextView.VISIBLE);
-            }
-        }
     }
 
     // Menu button handler
