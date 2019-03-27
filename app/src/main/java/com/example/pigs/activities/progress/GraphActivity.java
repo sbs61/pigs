@@ -1,6 +1,7 @@
 package com.example.pigs.activities.progress;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
@@ -21,6 +22,7 @@ import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
+import com.example.pigs.controllers.ProgressController;
 import com.example.pigs.controllers.WorkoutController;
 import com.example.pigs.entities.Exercise;
 import com.example.pigs.entities.Progress;
@@ -34,6 +36,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -42,7 +45,7 @@ import java.util.Set;
 
 public class GraphActivity extends AppCompatActivity {
     private ExerciseController exerciseController;
-
+    private Context context;
     private DrawerLayout drawerLayout;
     private GraphView graph;
     private GridLabelRenderer gridLabel;
@@ -52,6 +55,7 @@ public class GraphActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
+        context = this;
 
         graph = (GraphView) findViewById(R.id.graph);
 
@@ -83,37 +87,58 @@ public class GraphActivity extends AppCompatActivity {
 
         Spinner exercise = (Spinner)findViewById(R.id.selectedExercise);
 
-        String[] items = new String[]{"Bicep curls", "Bench press", "Pick a category"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items) {
+        // Get execises for the spinner that user has added progress for
+        @SuppressLint("StaticFieldLeak")
+        AsyncTask<Object, Void, List<String>> getProgressExercises = new AsyncTask<Object, Void, List<String>>() {
             @Override
-            public int getCount() {
-                return super.getCount()-1; // you dont display last item. It is used as hint.
+            @SuppressLint("WrongThread")
+            protected List<String> doInBackground(Object... params) {
+                // TODO: Get id from logged in user when authentication is implemented
+                int userId = 1;
+                return new ProgressController().getProgressNames(userId);
+            }
+
+            @Override
+            protected void onPostExecute(List<String> names) {
+                if(names != null) {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, names) {
+                        @Override
+                        public int getCount() {
+                            return super.getCount()-1; // you dont display last item. It is used as hint.
+                        }
+                    };
+
+                    exercise.setAdapter(adapter);
+                    exercise.setSelection(adapter.getCount());
+                    exercise.setVisibility(View.VISIBLE);
+
+                    exercise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                            String selectedEx  = exercise.getSelectedItem().toString();
+                            System.out.println(selectedEx);
+                            // TODO: make selectedExerciseId equal id of chosen exercise in spinner
+                            if(selectedEx == "Bicep curls"){
+                                selectedExerciseId = 1;
+                            } else if(selectedEx ==  "Bench press") {
+                                selectedExerciseId = 2;
+                            }
+                            drawGraph();
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parentView) {
+                            // your code here
+                        }
+
+                    });
+                }
             }
         };
 
-        exercise.setAdapter(adapter);
-        exercise.setSelection(adapter.getCount());
+        getProgressExercises.execute();
 
-        exercise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String selectedEx  = exercise.getSelectedItem().toString();
-                System.out.println(selectedEx);
-                // TODO: make selectedExerciseId equal id of chosen exercise in spinner
-                if(selectedEx == "Bicep curls"){
-                    selectedExerciseId = 1;
-                } else if(selectedEx ==  "Bench press") {
-                    selectedExerciseId = 2;
-                }
-                drawGraph();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
-
-        });
+        //String[] items = new String[]{"Bicep curls", "Bench press", "Pick a category"};
 
         // Non-working implementation, can be ignored
         /*
@@ -148,7 +173,7 @@ public class GraphActivity extends AppCompatActivity {
         };
 
         task2.execute();
-        */
+
 
         /*
         String[] exercises =  new String[exerciseIds.size()];
@@ -245,7 +270,7 @@ public class GraphActivity extends AppCompatActivity {
             protected String doInBackground(Object... params) {
                 // TODO: Get id from logged in user when authentication is implemented
                 Integer userId = 1;
-                return new WorkoutController().getProgress(userId);
+                return new ProgressController().getProgress(userId);
             }
 
             @Override

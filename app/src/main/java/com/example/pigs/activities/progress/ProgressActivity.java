@@ -29,6 +29,7 @@ import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
+import com.example.pigs.controllers.ProgressController;
 import com.example.pigs.controllers.WorkoutController;
 import com.example.pigs.entities.Exercise;
 import com.google.gson.Gson;
@@ -174,8 +175,7 @@ public class ProgressActivity extends AppCompatActivity {
             Gson gson = new Gson();
             Exercise[] ex = gson.fromJson(jsonEx, Exercise[].class);
 
-            WorkoutController wc = new WorkoutController();
-            return wc.createProgress(ex[0].getName(), reps, sets, weights, date);
+            return new ProgressController().createProgress(ex[0].getName(), reps, sets, weights, date);
         }
 
         @Override

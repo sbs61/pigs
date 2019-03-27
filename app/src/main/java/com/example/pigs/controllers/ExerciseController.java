@@ -15,6 +15,8 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExerciseController {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -66,8 +68,8 @@ public class ExerciseController {
         return jsonString;
     }
 
-    public String[] getExercisesByIds(Object[] ids) {
-        String[] jsonString = new String[ids.length];
+    public List<Exercise> getExercisesByIds(String[] ids) {
+        List<Exercise> list = new ArrayList<>();
         for (int i = 0; i < ids.length; i++) {
             String url = "https://hugbun2.herokuapp.com/exercise/" + ids[i];
 
@@ -79,14 +81,15 @@ public class ExerciseController {
             try {
                 Response res = client.newCall(request).execute();
                 if (res.isSuccessful()) {
-                    jsonString[i] = res.body().string();
+                    Gson gson = new Gson();
+                    list.add(gson.fromJson(res.body().string(), Exercise.class));
                     Log.e(TAG, res.toString());
                 }
             } catch (IOException e) {
                 Log.e(TAG, "Exception caught: ", e);
             }
         }
-        return jsonString;
+        return list;
     }
 
     public String getExerciseById(long id) {
