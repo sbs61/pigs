@@ -261,7 +261,7 @@ public class GraphActivity extends AppCompatActivity {
                     LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
                     for (Progress element : list) {
                         // Only show progress for selected exercise
-                        //exerciseIds.add(element.getExerciseId());
+                        exerciseIds.add(element.getExerciseId());
                         // System.out.println(exerciseIds);
                         // selectedExerciseId = (long) exerciseIds.toArray()[0];
                         System.out.println(selectedExerciseId);
