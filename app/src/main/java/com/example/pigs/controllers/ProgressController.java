@@ -76,23 +76,30 @@ public class ProgressController {
         return jsonString;
     }
 
-    public List<String> getProgressNames(int userId) {
+    public List<Exercise> getProgressNames(int userId) {
         String progress = getProgress(userId);
 
-        List<String> exerciseNames = new ArrayList<>();
+        List<Exercise> exercises = new ArrayList<>();
         if(progress != null) {
             Gson gson = new Gson();
             List<Progress> list = gson.fromJson(progress, new TypeToken<List<Progress>>() {}.getType());
 
+            List<Long> exerciseIds = new ArrayList<>();
             for(Progress element : list) {
-                // Get exercise from db
-                String ex = new ExerciseController().getExerciseById(element.getExerciseId());
-                Exercise exercise = gson.fromJson(ex, Exercise.class);
                 // Add exercise name to list
-                exerciseNames.add(exercise.getName());
+                if(!exerciseIds.contains(element.getExerciseId())) {
+                    exerciseIds.add(element.getExerciseId());
+                }
+            }
+
+            for(Long id : exerciseIds) {
+                // Get exercise from db
+                String ex = new ExerciseController().getExerciseById(id);
+                Exercise exercise = gson.fromJson(ex, Exercise.class);
+                exercises.add(exercise);
             }
         }
-        return exerciseNames;
+        return exercises;
     }
 }
 

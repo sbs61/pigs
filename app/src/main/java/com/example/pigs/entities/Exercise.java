@@ -36,4 +36,8 @@ public class Exercise {
         this.category = category;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -83,46 +83,33 @@ public class GraphActivity extends AppCompatActivity {
         graph.getGridLabelRenderer().setHumanRounding(true, true);
         graph.getGridLabelRenderer().setPadding(32);
 
-        drawGraph();
-
         Spinner exercise = (Spinner)findViewById(R.id.selectedExercise);
 
         // Get execises for the spinner that user has added progress for
         @SuppressLint("StaticFieldLeak")
-        AsyncTask<Object, Void, List<String>> getProgressExercises = new AsyncTask<Object, Void, List<String>>() {
+        AsyncTask<Object, Void, List<Exercise>> getProgressExercises = new AsyncTask<Object, Void, List<Exercise>>() {
             @Override
             @SuppressLint("WrongThread")
-            protected List<String> doInBackground(Object... params) {
+            protected List<Exercise> doInBackground(Object... params) {
                 // TODO: Get id from logged in user when authentication is implemented
                 int userId = 1;
                 return new ProgressController().getProgressNames(userId);
             }
 
             @Override
-            protected void onPostExecute(List<String> names) {
+            protected void onPostExecute(List<Exercise> names) {
                 if(names != null) {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, names) {
-                        @Override
-                        public int getCount() {
-                            return super.getCount()-1; // you dont display last item. It is used as hint.
-                        }
-                    };
+                    ArrayAdapter<Exercise> adapter = new ArrayAdapter<Exercise>(context, android.R.layout.simple_spinner_dropdown_item, names) {};
 
                     exercise.setAdapter(adapter);
-                    exercise.setSelection(adapter.getCount());
+                    exercise.setSelection(0);
                     exercise.setVisibility(View.VISIBLE);
 
                     exercise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                            String selectedEx  = exercise.getSelectedItem().toString();
-                            System.out.println(selectedEx);
-                            // TODO: make selectedExerciseId equal id of chosen exercise in spinner
-                            if(selectedEx == "Bicep curls"){
-                                selectedExerciseId = 1;
-                            } else if(selectedEx ==  "Bench press") {
-                                selectedExerciseId = 2;
-                            }
+                            Exercise selectedEx  = (Exercise) parentView.getSelectedItem();
+                            selectedExerciseId = selectedEx.getId();
                             drawGraph();
                         }
 
@@ -269,7 +256,7 @@ public class GraphActivity extends AppCompatActivity {
             @SuppressLint("WrongThread")
             protected String doInBackground(Object... params) {
                 // TODO: Get id from logged in user when authentication is implemented
-                Integer userId = 1;
+                int userId = 1;
                 return new ProgressController().getProgress(userId);
             }
 
@@ -287,9 +274,6 @@ public class GraphActivity extends AppCompatActivity {
                     for (Progress element : list) {
                         // Only show progress for selected exercise
                         exerciseIds.add(element.getExerciseId());
-                        // System.out.println(exerciseIds);
-                        // selectedExerciseId = (long) exerciseIds.toArray()[0];
-                        System.out.println(selectedExerciseId);
                         if(selectedExerciseId == element.getExerciseId()) {
                             Date date = null;
                             try {
