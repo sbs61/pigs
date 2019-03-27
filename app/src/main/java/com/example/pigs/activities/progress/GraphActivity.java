@@ -1,6 +1,6 @@
 package com.example.pigs.activities.progress;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
@@ -11,13 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CalendarView;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.support.v7.widget.Toolbar;
 
-import com.example.pigs.MainActivity;
 import com.example.pigs.R;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
@@ -34,12 +32,13 @@ import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GraphActivity extends AppCompatActivity {
     private ExerciseController exerciseController;
@@ -47,21 +46,12 @@ public class GraphActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private GraphView graph;
     private GridLabelRenderer gridLabel;
+    private long selectedExerciseId = 1;
+    Set<Long> exerciseIds = new LinkedHashSet<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
-
-        // Setup dates
-        // TODO: Fetch dates from workouts
-        Calendar calendar = Calendar.getInstance();
-        Date d1 = calendar.getTime();
-        calendar.add(Calendar.DATE, 1);
-        Date d2 = calendar.getTime();
-        calendar.add(Calendar.DATE, 1);
-        Date d3 = calendar.getTime();
-        calendar.add(Calendar.DATE, 1);
-        Date d4 = calendar.getTime();
 
         graph = (GraphView) findViewById(R.id.graph);
 
@@ -85,13 +75,115 @@ public class GraphActivity extends AppCompatActivity {
         graph.getViewport().setMaxX(d3.getTime());
         */
 
-
-        AsyncTask task = new GraphActivity.FetchProgressTask();
-        task.execute();
-
         // Round numbers
         graph.getGridLabelRenderer().setHumanRounding(true, true);
         graph.getGridLabelRenderer().setPadding(32);
+
+        drawGraph();
+
+        Spinner exercise = (Spinner)findViewById(R.id.selectedExercise);
+
+        String[] items = new String[]{"Bicep curls", "Bench press", "Pick a category"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items) {
+            @Override
+            public int getCount() {
+                return super.getCount()-1; // you dont display last item. It is used as hint.
+            }
+        };
+
+        exercise.setAdapter(adapter);
+        exercise.setSelection(adapter.getCount());
+
+        exercise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String selectedEx  = exercise.getSelectedItem().toString();
+                System.out.println(selectedEx);
+                // TODO: make selectedExerciseId equal id of chosen exercise in spinner
+                if(selectedEx == "Bicep curls"){
+                    selectedExerciseId = 1;
+                } else if(selectedEx ==  "Bench press") {
+                    selectedExerciseId = 2;
+                }
+                drawGraph();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        // Non-working implementation, can be ignored
+        /*
+        // Fetch progress by id with async task
+        @SuppressLint("StaticFieldLeak")
+        AsyncTask<Object, Void, String[]> task2 = new AsyncTask<Object, Void, String[]>() {
+
+            @Override
+            @SuppressLint("WrongThread")
+            protected String[] doInBackground(Object... params) {
+                // TODO: Get id from logged in user when authentication is implemented
+                return (String[]) new ExerciseController().getExercisesByIds(exerciseIds.toArray());
+            }
+
+            protected void onPostExecute(String[] items) {
+                Gson gson = new Gson();
+                //Exercise ex = gson.fromJson(items, Exercise.class);
+                    if (items != null) {
+                    }
+                        List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>() {
+                        }.getType());
+
+                        Calendar calendar = Calendar.getInstance();
+                        Date minDate = calendar.getTime();
+                        double minWeights = 0;
+                        LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
+                        for (Exercise element : list) {
+                            System.out.println(element.getName());
+                        System.out.println(items[i]);
+                        }
+                    }
+        };
+
+        task2.execute();
+        */
+
+        /*
+        String[] exercises =  new String[exerciseIds.size()];
+        System.out.println(exerciseIds);
+        for(int i = 0; i < exerciseIds.size(); i++) {
+            // Fetch progress by id with async task
+            int finalI = i;
+            @SuppressLint("StaticFieldLeak")
+            AsyncTask<Object, Void, String> task2 = new AsyncTask<Object, Void, String>() {
+
+                @Override
+                @SuppressLint("WrongThread")
+                protected String doInBackground(Object... params) {
+                    // TODO: Get id from logged in user when authentication is implemented
+                    return new ExerciseController().getExerciseById((int) exerciseIds.toArray()[0]);
+                }
+
+                @Override
+                protected void onPostExecute(String items) {
+                    Gson gson = new Gson();
+                    if (items != null) {
+                    }
+                    List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>() {
+                    }.getType());
+
+                    for (Exercise element : list) {
+                        exercises[finalI] = element.getName();
+                    }
+                }
+            };
+
+            task2.execute();
+        }
+        */
+
 
         // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -141,54 +233,96 @@ public class GraphActivity extends AppCompatActivity {
                 });
     }
 
-    // Fetch exercises by name with async task
-    private class FetchProgressTask extends AsyncTask<Object, Void, String> {
-        @Override
-        protected String doInBackground(Object... params) {
-            Integer userId = 1;
-            return new WorkoutController().getProgress(userId);
-        }
+    // Draw graph for selected exercise
+    public void drawGraph() {
+        graph.removeAllSeries();
+        // Fetch progress by id with async task
+        @SuppressLint("StaticFieldLeak")
+        AsyncTask<Object, Void, String> task1 = new AsyncTask<Object, Void, String>() {
 
-        @Override
-        protected void onPostExecute(String items) {
-            Gson gson = new Gson();
-            //Exercise ex = gson.fromJson(items, Exercise.class);
-            if(items != null) {
-                List<Progress> list = gson.fromJson(items, new TypeToken<List<Progress>>() {
-                }.getType());
+            @Override
+            @SuppressLint("WrongThread")
+            protected String doInBackground(Object... params) {
+                // TODO: Get id from logged in user when authentication is implemented
+                Integer userId = 1;
+                return new WorkoutController().getProgress(userId);
+            }
 
-                Calendar calendar = Calendar.getInstance();
-                Date minDate = calendar.getTime();
-                double minWeights = 0;
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
-                for (Progress element : list) {
-                    Date date = null;
-                    try {
-                        date = new SimpleDateFormat("yyyy-MM-dd").parse(element.getDate());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+            @Override
+            protected void onPostExecute(String items) {
+                Gson gson = new Gson();
+                if(items != null) {
+                    List<Progress> list = gson.fromJson(items, new TypeToken<List<Progress>>() {
+                    }.getType());
+
+                    Calendar calendar = Calendar.getInstance();
+                    Date minDate = calendar.getTime();
+                    double minWeights = 0;
+                    LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
+                    for (Progress element : list) {
+                        // Only show progress for selected exercise
+                        //exerciseIds.add(element.getExerciseId());
+                        // System.out.println(exerciseIds);
+                        // selectedExerciseId = (long) exerciseIds.toArray()[0];
+                        System.out.println(selectedExerciseId);
+                        if(selectedExerciseId == element.getExerciseId()) {
+                            Date date = null;
+                            try {
+                                date = new SimpleDateFormat("yyyy-MM-dd").parse(element.getDate());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            // Add data points to graph
+                            series.appendData(new DataPoint(date.getTime(), element.getWeight()), true, 40);
+                            minWeights = element.getWeight();
+                        }
                     }
-                    // Add data points to graph
-                    series.appendData(new DataPoint(date.getTime(), element.getWeight()), true, 40);
-                    minDate = date;
-                    minWeights = element.getWeight();
+
+                    series.setDrawDataPoints(true);
+                    graph.addSeries(series);
+
+                    gridLabel = graph.getGridLabelRenderer();
+                    gridLabel.setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this));
+                    gridLabel.setNumHorizontalLabels(4); // only 4 because of the space
+                    gridLabel.setNumVerticalLabels(6);
+
+                    graph.getViewport().setMinY(minWeights-10);
+                }
+            }
+        };
+
+        task1.execute();
+    }
+
+    // TODO: Add exercises user has progress on into the spinner
+    private void setSpinner(){
+        String[] exercises =  new String[exerciseIds.size()];
+        System.out.println((Long)exerciseIds.toArray()[0]);
+            // Fetch progress by id with async task
+            @SuppressLint("StaticFieldLeak")
+            AsyncTask<Object, Void, String> task2 = new AsyncTask<Object, Void, String>() {
+
+                @Override
+                @SuppressLint("WrongThread")
+                protected String doInBackground(Object... params) {
+                    // TODO: Get id from logged in user when authentication is implemented
+                    return new ExerciseController().getExerciseById(1);
                 }
 
-                series.setDrawDataPoints(true);
-                graph.addSeries(series);
+                @Override
+                protected void onPostExecute(String items) {
+                    Gson gson = new Gson();
+                    if (items != null) {
+                    }
+                    List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>() {}.getType());
 
-                gridLabel = graph.getGridLabelRenderer();
-                gridLabel.setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this));
-                gridLabel.setNumHorizontalLabels(4); // only 4 because of the space
-                gridLabel.setNumVerticalLabels(6);
+                    for (Exercise element : list) {
+                        exercises[0] = element.getName();
+                    }
+                }
+            };
 
-                /*
-                graph.getViewport().setMinX(minDate.getTime());
-                */
-                graph.getViewport().setMinY(minWeights-10);
-
-            }
-        }
+            task2.execute();
     }
 
     // Menu button handler

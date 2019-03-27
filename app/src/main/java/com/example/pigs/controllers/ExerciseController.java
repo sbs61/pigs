@@ -66,6 +66,52 @@ public class ExerciseController {
         return jsonString;
     }
 
+    public String[] getExercisesByIds(Object[] ids) {
+        String[] jsonString = new String[ids.length];
+        for (int i = 0; i < ids.length; i++) {
+            String url = "https://hugbun2.herokuapp.com/exercise/" + ids[i];
+
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            try {
+                Response res = client.newCall(request).execute();
+                if (res.isSuccessful()) {
+                    jsonString[i] = res.body().string();
+                    Log.e(TAG, res.toString());
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "Exception caught: ", e);
+            }
+        }
+        return jsonString;
+    }
+
+    public String getExerciseById(long id) {
+            String url = "https://hugbun2.herokuapp.com/exercise/" + id;
+
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            String jsonString = null;
+
+            try {
+                Response res = client.newCall(request).execute();
+                if (res.isSuccessful()) {
+                    jsonString = res.body().string();
+                    Log.e(TAG, res.toString());
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "Exception caught: ", e);
+            }
+
+        return jsonString;
+    }
+
     public Boolean createExercise(String name, String category) {
         Exercise ex = new Exercise(null, name, category);
         String url = "https://hugbun2.herokuapp.com/exercise";
