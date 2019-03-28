@@ -35,7 +35,8 @@ android:fitsSystemWindows="true">
         android:id="@+id/createWorkoutHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/createWorkout" />
+        android:text="@string/createWorkout"
+        android:textSize="36sp" />
 
     <EditText
         android:id="@+id/workoutName"
@@ -63,19 +64,21 @@ android:fitsSystemWindows="true">
     <ListView
         android:id="@+id/exerciseList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="300dp" />
 
-    <CheckBox
-        android:id="@+id/checkBox"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Make My Workout Public" />
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="createWorkoutPost"
+            android:text="Create Workout" />
+    </LinearLayout>
 </LinearLayout>
 
 <!-- Container for contents of drawer - use NavigationView to make configuration easier -->

@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pigs.R;
-import com.example.pigs.activities.exercise.CreateExerciseActivity;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
 
@@ -85,6 +84,7 @@ public class ScheduleActivity extends AppCompatActivity {
                 // display the selected date
                 Toast.makeText(getApplicationContext(), "" + dayOfMonth + "." + (month+1) + "." + year, 5).show();
                 TextView foundWorkout = (TextView) findViewById(R.id.foundWorkout);
+                // TODO: Compare selected date to any workout dates
                 // Check if selected date matches workout date and setText accordingly
                 if(dayOfMonth == day && (month+1) == month2 && year == year2) {
                     foundWorkout.setText("Chest workout");

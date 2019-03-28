@@ -1,5 +1,6 @@
 package com.example.pigs.activities.workout;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
@@ -11,18 +12,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,6 +32,7 @@ import com.example.pigs.R;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.controllers.ExerciseController;
+import com.example.pigs.controllers.WorkoutController;
 
 public class CreateWorkoutActivity extends AppCompatActivity {
 
@@ -49,6 +48,9 @@ public class CreateWorkoutActivity extends AppCompatActivity {
 
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+
+    private EditText workoutName;
+    private EditText workoutCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +106,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         arrayList = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, arrayList);
         list.setAdapter(adapter);
-        /* Hérna kemur eitthvað til að ná í exercises */
+         // TODO: Implement fetch exercises and display as list
         //exercises = exerciseController.getExercises();
         //arrayList.add(exercises);
         // next thing you have to do is check if your adapter has changed
@@ -146,6 +148,35 @@ public class CreateWorkoutActivity extends AppCompatActivity {
                 mDisplayDate.setText(df.format(date));
             }
         };
+    }
+
+    // Create a new workout method
+    public void createWorkoutPost(View button){
+        @SuppressLint("StaticFieldLeak")
+        AsyncTask<Object, Void, Boolean> createWorkoutTask = new AsyncTask<Object, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Object... params) {
+                workoutName  = (EditText) findViewById(R.id.workoutName);
+                String name = workoutName.getText().toString();
+                workoutCategory = (EditText) findViewById(R.id.workoutCategory);
+                String category = workoutCategory.getText().toString();
+                String date = mDisplayDate.getText().toString();
+
+                // TODO: Get selected exercises from list and add to workout
+
+                return new WorkoutController().createWorkout(name, category, date);
+            }
+
+            @Override
+            protected void onPostExecute(Boolean items) {
+                System.out.println(items);
+            }
+        };
+
+        createWorkoutTask.execute();
+
+        workoutName.setText("");
+        workoutCategory.setText("");
     }
 
     // Menu button handler

@@ -1,5 +1,6 @@
 package com.example.pigs.activities.progress;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,31 +15,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import com.example.pigs.MainActivity;
 import com.example.pigs.R;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.controllers.ProgressController;
-import com.example.pigs.controllers.WorkoutController;
 import com.example.pigs.entities.Exercise;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class ProgressActivity extends AppCompatActivity {
     private static final String TAG = "ProgressActivity";
@@ -134,8 +128,38 @@ public class ProgressActivity extends AppCompatActivity {
 
     // Add progress button handler
     public void addProgress(View button){
-        AsyncTask task = new ProgressActivity.addProgressTask();
-        task.execute();
+        // Async task to add progress
+        @SuppressLint("StaticFieldLeak")
+        AsyncTask<Object, Void, Boolean> progressPostTask = new AsyncTask<Object, Void, Boolean>() {
+            @Override
+            @SuppressLint("WrongThread")
+            protected Boolean doInBackground(Object... params) {
+                EditText e = (EditText) findViewById(R.id.exercise);
+                String exercise = e.getText().toString();
+                EditText w = (EditText) findViewById(R.id.weights);
+                double weights = Double.parseDouble(w.getText().toString());
+                EditText r = (EditText) findViewById(R.id.reps);
+                int reps = Integer.parseInt(r.getText().toString());
+                EditText s = (EditText) findViewById(R.id.sets);
+                int sets = Integer.parseInt(s.getText().toString());
+
+                String date = mDisplayDate.getText().toString();
+
+                ExerciseController ec = new ExerciseController();
+                String jsonEx = ec.getExercises(exercise);
+                Gson gson = new Gson();
+                Exercise[] ex = gson.fromJson(jsonEx, Exercise[].class);
+
+                return new ProgressController().createProgress(ex[0].getName(), reps, sets, weights, date);
+            }
+
+            @Override
+            protected void onPostExecute(Boolean items) {
+                System.out.println(items);
+            }
+        };
+
+        progressPostTask.execute();
     }
 
     // View progress button handler, go to GraphActivity
@@ -153,34 +177,5 @@ public class ProgressActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    // Async task to add progress
-    private class addProgressTask extends AsyncTask<Object, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(Object... params) {
-            EditText e = (EditText) findViewById(R.id.exercise);
-            String exercise = e.getText().toString();
-            EditText w = (EditText) findViewById(R.id.weights);
-            double weights = Double.parseDouble(w.getText().toString());
-            EditText r = (EditText) findViewById(R.id.reps);
-            int reps = Integer.parseInt(r.getText().toString());
-            EditText s = (EditText) findViewById(R.id.sets);
-            int sets = Integer.parseInt(s.getText().toString());
-
-            String date = mDisplayDate.getText().toString();
-
-            ExerciseController ec = new ExerciseController();
-            String jsonEx = ec.getExercises(exercise);
-            Gson gson = new Gson();
-            Exercise[] ex = gson.fromJson(jsonEx, Exercise[].class);
-
-            return new ProgressController().createProgress(ex[0].getName(), reps, sets, weights, date);
-        }
-
-        @Override
-        protected void onPostExecute(Boolean items) {
-            System.out.println(items);
-        }
     }
 }

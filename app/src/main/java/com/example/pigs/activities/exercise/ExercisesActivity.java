@@ -14,14 +14,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.pigs.MainActivity;
 import com.example.pigs.R;
 import com.example.pigs.activities.authentication.LoginActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
@@ -104,7 +100,7 @@ public class ExercisesActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // Fetch exercises by name with async task
                 @SuppressLint("StaticFieldLeak")
-                AsyncTask<Object, Void, String> task = new AsyncTask<Object, Void, String>() {
+                AsyncTask<Object, Void, String> getExercisesTask = new AsyncTask<Object, Void, String>() {
 
                     @Override
                     @SuppressLint("WrongThread")
@@ -127,7 +123,7 @@ public class ExercisesActivity extends AppCompatActivity {
                     }
                 };
 
-                task.execute();
+                getExercisesTask.execute();
             }
 
             @Override

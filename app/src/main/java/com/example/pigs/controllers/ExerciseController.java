@@ -68,30 +68,6 @@ public class ExerciseController {
         return jsonString;
     }
 
-    public List<Exercise> getExercisesByIds(String[] ids) {
-        List<Exercise> list = new ArrayList<>();
-        for (int i = 0; i < ids.length; i++) {
-            String url = "https://hugbun2.herokuapp.com/exercise/" + ids[i];
-
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url(url)
-                    .build();
-
-            try {
-                Response res = client.newCall(request).execute();
-                if (res.isSuccessful()) {
-                    Gson gson = new Gson();
-                    list.add(gson.fromJson(res.body().string(), Exercise.class));
-                    Log.e(TAG, res.toString());
-                }
-            } catch (IOException e) {
-                Log.e(TAG, "Exception caught: ", e);
-            }
-        }
-        return list;
-    }
-
     public String getExerciseById(long id) {
             String url = "https://hugbun2.herokuapp.com/exercise/" + id;
 
