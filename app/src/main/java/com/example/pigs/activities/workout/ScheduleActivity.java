@@ -17,6 +17,10 @@ import com.example.pigs.R;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
 
+/*
+ * TODO: NOT FULLY IMPLEMENTED YET
+ */
+
 public class ScheduleActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;

@@ -23,12 +23,12 @@ public class ProgressController {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String TAG = GraphActivity.class.getSimpleName();
 
+    // POST progress to api
     public Boolean createProgress(String name, int reps, int sets, Double weight, String date) {
         Progress pr = new Progress(null, 1L, 1L, sets, reps, weight, date);
         String url = "https://hugbun2.herokuapp.com/progress";
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(pr);
-
         RequestBody body = RequestBody.create(JSON, json);
 
         OkHttpClient client = new OkHttpClient();
@@ -53,6 +53,7 @@ public class ProgressController {
         return false;
     }
 
+    // Get a users progress by user id
     public String getProgress(int userId) {
         String url = "https://hugbun2.herokuapp.com/progress?uid="+userId;
 
@@ -76,7 +77,8 @@ public class ProgressController {
         return jsonString;
     }
 
-    public List<Exercise> getProgressNames(int userId) {
+    // Get exercises that a user has progress for
+    public List<Exercise> getProgressExercises(int userId) {
         String progress = getProgress(userId);
 
         List<Exercise> exercises = new ArrayList<>();

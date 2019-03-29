@@ -27,6 +27,10 @@ import com.example.pigs.entities.Exercise;
 
 import java.io.IOException;
 
+/*
+ * TODO: NOT IMPLEMENTED YET
+ */
+
 public class LoginActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;

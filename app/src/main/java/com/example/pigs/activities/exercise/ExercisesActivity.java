@@ -62,8 +62,7 @@ public class ExercisesActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // set item as selected to persist highlight
@@ -176,7 +175,6 @@ public class ExercisesActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(String items) {
                 Gson gson = new Gson();
-                //Exercise ex = gson.fromJson(items, Exercise.class);
                 if(items != null) {
                     List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>() {}.getType());
                     textView.setText("");

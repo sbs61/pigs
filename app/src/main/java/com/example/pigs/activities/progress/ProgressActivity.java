@@ -108,6 +108,7 @@ public class ProgressActivity extends AppCompatActivity {
             }
         });
 
+        // Handler for date picker
         mDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -128,12 +129,14 @@ public class ProgressActivity extends AppCompatActivity {
 
     // Add progress button handler
     public void addProgress(View button){
-        // Async task to add progress
+        // Async task to add progress to database
         @SuppressLint("StaticFieldLeak")
         AsyncTask<Object, Void, Boolean> progressPostTask = new AsyncTask<Object, Void, Boolean>() {
             @Override
             @SuppressLint("WrongThread")
             protected Boolean doInBackground(Object... params) {
+                // Get info from input
+                // TODO: Exercise name should be a dropdown menu not a text input
                 EditText e = (EditText) findViewById(R.id.exercise);
                 String exercise = e.getText().toString();
                 EditText w = (EditText) findViewById(R.id.weights);
@@ -142,7 +145,6 @@ public class ProgressActivity extends AppCompatActivity {
                 int reps = Integer.parseInt(r.getText().toString());
                 EditText s = (EditText) findViewById(R.id.sets);
                 int sets = Integer.parseInt(s.getText().toString());
-
                 String date = mDisplayDate.getText().toString();
 
                 ExerciseController ec = new ExerciseController();
@@ -155,7 +157,7 @@ public class ProgressActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Boolean items) {
-                System.out.println(items);
+
             }
         };
 

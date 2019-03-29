@@ -78,7 +78,7 @@ public class GraphActivity extends AppCompatActivity {
             protected List<Exercise> doInBackground(Object... params) {
                 // TODO: Get id from logged in user when authentication is implemented
                 int userId = 1;
-                return new ProgressController().getProgressNames(userId);
+                return new ProgressController().getProgressExercises(userId);
             }
 
             @Override

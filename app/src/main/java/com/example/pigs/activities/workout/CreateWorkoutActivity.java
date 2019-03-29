@@ -34,6 +34,10 @@ import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.controllers.WorkoutController;
 
+/*
+ * TODO: NOT FULLY IMPLEMENTED YET
+ */
+
 public class CreateWorkoutActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateWorkoutActivity";

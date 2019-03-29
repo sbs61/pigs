@@ -1,5 +1,6 @@
 package com.example.pigs.activities.exercise;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
@@ -14,7 +15,6 @@ import android.widget.Spinner;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.support.v7.widget.Toolbar;
-
 import com.example.pigs.R;
 import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
@@ -30,6 +30,7 @@ public class CreateExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_exercise);
 
+        // Dropdown menu for categories
         Spinner dropdown = findViewById(R.id.spinner);
         String[] items = new String[]{"Arms", "Back", "Chest", "Core", "Legs", "Shoulders", "Pick a category"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items) {
@@ -53,8 +54,7 @@ public class CreateExerciseActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // set item as selected to persist highlight
@@ -90,9 +90,39 @@ public class CreateExerciseActivity extends AppCompatActivity {
                 });
     }
 
-    // Create exercise button handler executes an Asyncronous task
+    // Create exercise button handler executes an Asyncronous task to add exercise to database
     public void createExercise(View button){
-        AsyncTask task = new CreateExerciseActivity.CreateExerciseTask();
+        @SuppressLint("StaticFieldLeak")
+        AsyncTask<Object, Void, Boolean> task = new AsyncTask<Object, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Object... params) {
+                EditText name = (EditText) findViewById(R.id.exercise_name);
+                String exercise_name = name.getText().toString();
+                EditText category = (EditText) findViewById(R.id.exercise_category);
+                Spinner dropdown = (Spinner) findViewById(R.id.spinner);
+                String exercise_category = dropdown.getSelectedItem().toString();
+
+                // Validate fields are not empty
+                if(exercise_name != "" && exercise_category != "") {
+                    name.setText("");
+                    dropdown.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            dropdown.setSelection(6);
+                        }
+                    });
+
+                    // Call create exercise function from controller
+                    return new ExerciseController().createExercise(exercise_name, exercise_category);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean items) {
+                System.out.println(items);
+            }
+        };
         task.execute();
     }
 
@@ -105,37 +135,5 @@ public class CreateExerciseActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    // Create a new exercise
-    private class CreateExerciseTask extends AsyncTask<Object, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(Object... params) {
-            EditText name = (EditText) findViewById(R.id.exercise_name);
-            String exercise_name = name.getText().toString();
-            EditText category = (EditText) findViewById(R.id.exercise_category);
-            Spinner dropdown = (Spinner) findViewById(R.id.spinner);
-            String exercise_category = dropdown.getSelectedItem().toString();
-
-            // Validate fields are not empty
-            if(exercise_name != "" && exercise_category != "") {
-                name.setText("");
-                dropdown.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        dropdown.setSelection(6);
-                    }
-                });
-
-                // Call create exercise function from controller
-                return new ExerciseController().createExercise(exercise_name, exercise_category);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean items) {
-            System.out.println(items);
-        }
     }
 }
