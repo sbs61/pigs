@@ -8,7 +8,7 @@ public class Workout {
     private Long userId;
     private String name;
     private String category;
-    private List<WorkoutExercise> exercises;
+    private List<String> exercises;
     private String date;
     private int day;
     private int month;
@@ -17,7 +17,7 @@ public class Workout {
     public Workout() {
     }
 
-    public Workout(Long id, Long userId, String name, String category, List exercises, String date) {
+    public Workout(Long id, Long userId, String name, String category, List<String> exercises, String date) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -58,9 +58,9 @@ public class Workout {
         this.category = category;
     }
 
-    public List<WorkoutExercise> getExercises() { return exercises; }
+    public List<String> getExercises() { return exercises; }
 
-    public void setExercises(List exercises) { this.exercises = exercises; }
+    public void setExercises(List<String> exercises) { this.exercises = exercises; }
 
     public String getDate() { return date; }
 

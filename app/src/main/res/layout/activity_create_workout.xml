@@ -42,29 +42,59 @@ android:fitsSystemWindows="true">
         android:id="@+id/workoutName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:ems="10"
-        android:hint="Workout name"
-        android:inputType="text" />
+        android:hint="Workout Name"
+        android:inputType="text"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/workoutCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:ems="10"
-        android:hint="Category"
-        android:inputType="textPersonName" />
+        android:hint="Workout Category"
+        android:inputType="text"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/workoutDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:hint="Select A Date "
-        android:textSize="18sp" />
+        android:textSize="24sp" />
+
+    <Spinner
+        android:id="@+id/dropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:spinnerMode="dialog"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/addExercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:onClick="addExercise"
+        android:text="Add Exercise To Workout" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Exercises In Workout:"
+        android:textSize="24sp" />
 
     <ListView
         android:id="@+id/exerciseList"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="wrap_content"
+        android:padding="8dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -89,6 +119,8 @@ android:fitsSystemWindows="true">
     android:layout_gravity="start"
     android:fitsSystemWindows="true"
     app:menu="@menu/menu"
-    app:headerLayout="@layout/nav_header" />
+    app:headerLayout="@layout/nav_header" >
+
+</android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

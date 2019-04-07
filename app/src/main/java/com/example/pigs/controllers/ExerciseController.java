@@ -16,6 +16,18 @@ public class ExerciseController {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String TAG = MainActivity.class.getSimpleName();
 
+    // Get all exercises from api
+    public String getAllExercises() {
+        String url = "https://hugbun2.herokuapp.com/exercise";
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        return execute(client, request);
+    }
+
     // Get exercise from api by name
     public String getExercises(String name) {
         String url = "https://hugbun2.herokuapp.com/exercise/name?name="+name;
