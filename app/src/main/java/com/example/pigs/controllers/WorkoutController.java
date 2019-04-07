@@ -25,8 +25,31 @@ public class WorkoutController {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String TAG = GraphActivity.class.getSimpleName();
 
-    public Boolean createWorkout(String name, String category, String date) {
-        Workout w = new Workout(null, 1L, name, category, null, date );
+    public String getAllWorkouts(int userId) {
+        String url = "https://hugbun2.herokuapp.com/workout/" + userId;
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        String jsonString = null;
+
+        try {
+            Response res = client.newCall(request).execute();
+            if (res.isSuccessful()) {
+                jsonString = res.body().string();
+                Log.e(TAG, res.toString());
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Exception caught: ", e);
+        }
+
+        return jsonString;
+    }
+
+    public Boolean createWorkout(String name, String category, List<String> exercises, String date) {
+        Workout w = new Workout(null, 1L, name, category, exercises, date);
         String url = "https://hugbun2.herokuapp.com/workout";
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(w);

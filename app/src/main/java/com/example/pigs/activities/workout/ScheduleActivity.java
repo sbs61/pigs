@@ -17,6 +17,11 @@ import com.example.pigs.R;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 /*
  * TODO: NOT FULLY IMPLEMENTED YET
  */
@@ -88,6 +93,8 @@ public class ScheduleActivity extends AppCompatActivity {
                 // display the selected date
                 Toast.makeText(getApplicationContext(), "" + dayOfMonth + "." + (month+1) + "." + year, 5).show();
                 TextView foundWorkout = (TextView) findViewById(R.id.foundWorkout);
+                String stringDate = "" + year + "-" + month + "-" + dayOfMonth;
+                System.out.println(parseDate(stringDate));
                 // TODO: Compare selected date to any workout dates
                 // Check if selected date matches workout date and setText accordingly
                 if(dayOfMonth == day && (month+1) == month2 && year == year2) {
@@ -98,6 +105,14 @@ public class ScheduleActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public static Date parseDate(String date) {
+        try {
+            return new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 
     // Menu button handler

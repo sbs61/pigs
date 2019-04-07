@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
@@ -25,14 +26,19 @@ import android.widget.DatePicker;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import com.example.pigs.R;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.controllers.WorkoutController;
+import com.example.pigs.entities.Exercise;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 /*
  * TODO: NOT FULLY IMPLEMENTED YET
@@ -46,15 +52,20 @@ public class CreateWorkoutActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
     private ListView list;
-    private ArrayAdapter<String> adapter;
     private ArrayList<String> arrayList;
     private String exercises;
 
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
+    private Spinner dropdown;
+    private ListView listView;
     private EditText workoutName;
     private EditText workoutCategory;
+    private List<String> workoutExercises;
+    private List<String> exerciseList;
+    private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +74,28 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_workout);
         exerciseController = new ExerciseController();
 
+        workoutExercises = new ArrayList<String>();
+        exerciseList = new ArrayList<String>();
+        dropdown = (Spinner)findViewById(R.id.dropdown);
+        listView = (ListView)findViewById(R.id.exerciseList);
         // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        getExercises();
+
+        // Create an ArrayAdapter from List
+
+        arrayAdapter = new ArrayAdapter<String>
+                (getApplicationContext(), R.layout.activity_list_item_1, workoutExercises);
+
+
+        // DataBind ListView with items from ArrayAdapter
+        listView.setAdapter(arrayAdapter);
+        arrayAdapter.notifyDataSetChanged();
 
         // Create drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -105,6 +132,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
                     }
                 });
 
+        /*
         // Exercise list
         list = findViewById(R.id.exerciseList);
         arrayList = new ArrayList<String>();
@@ -115,6 +143,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         //arrayList.add(exercises);
         // next thing you have to do is check if your adapter has changed
         adapter.notifyDataSetChanged();
+        */
 
         // Date Picker
         mDisplayDate = findViewById(R.id.workoutDate);
@@ -154,33 +183,81 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         };
     }
 
+    public void addExercise(View button){
+        String ex = dropdown.getSelectedItem().toString();
+        workoutExercises.add(ex);
+        arrayAdapter.notifyDataSetChanged();
+    }
+
+    public void getExercises(){
+        @SuppressLint("StaticFieldLeak")
+        AsyncTask<Object, Void, String> getExercisesTask = new AsyncTask<Object, Void, String>() {
+            @Override
+            @SuppressLint("WrongThread")
+            protected String doInBackground(Object... params) {
+                return new ExerciseController().getAllExercises();
+            }
+
+            @Override
+            protected void onPostExecute(String items) {
+                Gson gson = new Gson();
+                if(items != null) {
+                    List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>() {}.getType());
+
+                    for (Exercise element : list) {
+                        // Create a List from String Array elements
+                        exerciseList.add(element.getName());
+
+                        System.out.println(exerciseList);
+                    }
+                    exerciseList.add("Select an exercise");
+
+                    adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, exerciseList) {
+                        @Override
+                        public int getCount() {
+                            return super.getCount()-1; // you dont display last item. It is used as hint.
+                        }
+                    };
+
+                    dropdown.setAdapter(adapter);
+                    dropdown.setSelection(adapter.getCount());
+                }
+            }
+        };
+
+        getExercisesTask.execute();
+    }
+
     // Create a new workout method
     public void createWorkoutPost(View button){
         @SuppressLint("StaticFieldLeak")
         AsyncTask<Object, Void, Boolean> createWorkoutTask = new AsyncTask<Object, Void, Boolean>() {
             @Override
             protected Boolean doInBackground(Object... params) {
-                workoutName  = (EditText) findViewById(R.id.workoutName);
+                workoutName  = findViewById(R.id.workoutName);
                 String name = workoutName.getText().toString();
-                workoutCategory = (EditText) findViewById(R.id.workoutCategory);
+                workoutCategory = findViewById(R.id.workoutCategory);
                 String category = workoutCategory.getText().toString();
                 String date = mDisplayDate.getText().toString();
 
                 // TODO: Get selected exercises from list and add to workout
 
-                return new WorkoutController().createWorkout(name, category, date);
+                workoutName.setText("");
+                workoutCategory.setText("");
+
+                System.out.println(workoutExercises);
+                return new WorkoutController().createWorkout(name, category, workoutExercises, date);
             }
 
             @Override
             protected void onPostExecute(Boolean items) {
                 System.out.println(items);
+                workoutExercises = new ArrayList<String>();
+                arrayAdapter.notifyDataSetChanged();
             }
         };
 
         createWorkoutTask.execute();
-
-        workoutName.setText("");
-        workoutCategory.setText("");
     }
 
     // Menu button handler
