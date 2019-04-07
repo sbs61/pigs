@@ -95,6 +95,7 @@ public class RegistrationActivity extends AppCompatActivity {
         EditText password = (EditText) findViewById(R.id.register_password);
         String reg_password = password.getText().toString();
 
+
         Intent i = new Intent(RegistrationActivity.this, LoginActivity.class);
         startActivity(i);
     }
