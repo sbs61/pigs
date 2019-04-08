@@ -69,18 +69,16 @@ public class LoginActivity extends AppCompatActivity {
             }
             @Override
             protected void onPostExecute(String items) {
-                System.out.println("wow" + items);
-                if(items != null){
-                    if(!items.equals("")) {
-                        SharedPreferences.Editor editor = getSharedPreferences("user", MODE_PRIVATE).edit();
-                        editor.putString("userId", items);
-                        editor.apply();
-
-                        Intent i = new Intent(LoginActivity.this, ExercisesActivity.class);
-                        startActivity(i);
-                    }
+                if(items != null && !items.equals("")){
+                    SharedPreferences.Editor editor = getSharedPreferences("user", MODE_PRIVATE).edit();
+                    editor.putString("userId", items);
+                    editor.apply();
+                    incorrect.setVisibility(View.GONE);
+                    Intent i = new Intent(LoginActivity.this, ExercisesActivity.class);
+                    startActivity(i);
+                } else {
+                    incorrect.setVisibility(View.VISIBLE);
                 }
-                incorrect.setVisibility(View.VISIBLE);
             }
         };
         loginTask.execute();
