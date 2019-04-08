@@ -1,5 +1,6 @@
 package com.example.pigs.activities.authentication;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +24,7 @@ import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
+import com.example.pigs.controllers.AuthenticationController;
 import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.entities.Exercise;
 
@@ -90,14 +93,27 @@ public class RegistrationActivity extends AppCompatActivity {
 
     // Register button handler
     public void registerUser(View button){
-        EditText username = (EditText) findViewById(R.id.register_username);
-        String reg_username = username.getText().toString();
-        EditText password = (EditText) findViewById(R.id.register_password);
-        String reg_password = password.getText().toString();
+        @SuppressLint("StaticFieldLeak")
+        AsyncTask<Object, Void, Boolean> registerTask = new AsyncTask<Object, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Object... params) {
+                EditText username = (EditText) findViewById(R.id.register_username);
+                String reg_username = username.getText().toString();
+                EditText password = (EditText) findViewById(R.id.register_password);
+                String reg_password = password.getText().toString();
 
+                // Call register function from Authentication Controller
+                return new AuthenticationController().register(reg_username, reg_password);
+            }
 
-        Intent i = new Intent(RegistrationActivity.this, LoginActivity.class);
-        startActivity(i);
+            @Override
+            protected void onPostExecute(Boolean items) {
+                System.out.println(items);
+                Intent i = new Intent(RegistrationActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
+        };
+        registerTask.execute();
     }
 
     // Menu button handler
