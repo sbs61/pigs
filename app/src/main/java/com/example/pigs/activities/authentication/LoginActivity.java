@@ -36,58 +36,13 @@ import java.io.IOException;
 public class LoginActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
+    private TextView incorrect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        // Insert the toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
-        // Setup drawer layout
-        drawerLayout = findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
-                        // close drawer when item is tapped
-                        drawerLayout.closeDrawers();
-
-                        // Handle navigation
-                        switch(menuItem.getItemId()){
-                            case R.id.nav_exercises:{
-                                Intent i = new Intent(LoginActivity.this, ExercisesActivity.class);
-                                startActivity(i);
-                                break;
-                            }
-                            case R.id.nav_workouts:{
-                                Intent i = new Intent(LoginActivity.this, CreateWorkoutActivity.class);
-                                startActivity(i);
-                                break;
-                            }
-                            case R.id.nav_schedule:{
-                                Intent i = new Intent(LoginActivity.this, ScheduleActivity.class);
-                                startActivity(i);
-                                break;
-                            }
-                            case R.id.nav_progress:{
-                                Intent i = new Intent(LoginActivity.this, ProgressActivity.class);
-                                startActivity(i);
-                                break;
-                            }
-                        }
-                        return true;
-                    }
-                });
+        incorrect = findViewById(R.id.incorrect);
     }
 
     // Initiate register activity when Register button is clicked
@@ -113,20 +68,16 @@ public class LoginActivity extends AppCompatActivity {
             }
             @Override
             protected void onPostExecute(String items) {
-                System.out.println(items);
+                System.out.println("wow" + items);
+                if(items != null){
+                    if(!items.equals("")) {
+                        Intent i = new Intent(LoginActivity.this, ExercisesActivity.class);
+                        startActivity(i);
+                    }
+                }
+                incorrect.setVisibility(View.VISIBLE);
             }
         };
         loginTask.execute();
-    }
-
-    // Menu button handler
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

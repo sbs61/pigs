@@ -42,53 +42,6 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-        //  Setup toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
-        // Create drawer layout
-        drawerLayout = findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
-                        // close drawer when item is tapped
-                        drawerLayout.closeDrawers();
-
-                        // Handle navigation
-                        switch(menuItem.getItemId()){
-                            case R.id.nav_exercises:{
-                                Intent i = new Intent(RegistrationActivity.this, ExercisesActivity.class);
-                                startActivity(i);
-                                break;
-                            }
-                            case R.id.nav_workouts:{
-                                Intent i = new Intent(RegistrationActivity.this, CreateWorkoutActivity.class);
-                                startActivity(i);
-                                break;
-                            }
-                            case R.id.nav_schedule:{
-                                Intent i = new Intent(RegistrationActivity.this, ScheduleActivity.class);
-                                startActivity(i);
-                                break;
-                            }
-                            case R.id.nav_progress:{
-                                Intent i = new Intent(RegistrationActivity.this, ProgressActivity.class);
-                                startActivity(i);
-                                break;
-                            }
-                        }
-                        return true;
-                    }
-                });
     }
 
     // Register button handler
@@ -114,16 +67,5 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         };
         registerTask.execute();
-    }
-
-    // Menu button handler
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

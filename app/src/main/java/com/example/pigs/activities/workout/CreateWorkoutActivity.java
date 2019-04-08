@@ -197,7 +197,6 @@ public class CreateWorkoutActivity extends AppCompatActivity {
             protected String doInBackground(Object... params) {
                 return new ExerciseController().getAllExercises();
             }
-
             @Override
             protected void onPostExecute(String items) {
                 Gson gson = new Gson();
@@ -224,7 +223,6 @@ public class CreateWorkoutActivity extends AppCompatActivity {
                 }
             }
         };
-
         getExercisesTask.execute();
     }
 
