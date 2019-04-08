@@ -9,6 +9,7 @@
 
 
     <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,14 +39,13 @@
             android:textSize="36sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/exercise"
+        <Spinner
+            android:id="@+id/dropdown2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="@string/exerciseName"
-            android:ems="10"
-            android:hint="@string/exerciseName"
-            android:inputType="text" />
+            android:layout_marginBottom="8dp"
+            android:spinnerMode="dialog"
+            android:textSize="24sp" />
 
         <EditText
             android:id="@+id/weights"

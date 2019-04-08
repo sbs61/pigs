@@ -3,6 +3,7 @@ package com.example.pigs.activities.progress;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -76,8 +77,8 @@ public class GraphActivity extends AppCompatActivity {
             @Override
             @SuppressLint("WrongThread")
             protected List<Exercise> doInBackground(Object... params) {
-                // TODO: Get id from logged in user when authentication is implemented
-                int userId = 1;
+                SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
+                int userId = Integer.parseInt(prefs.getString("userId", null));
                 return new ProgressController().getProgressExercises(userId);
             }
 

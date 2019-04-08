@@ -2,6 +2,7 @@ package com.example.pigs.activities.workout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -243,8 +244,9 @@ public class CreateWorkoutActivity extends AppCompatActivity {
                 workoutName.setText("");
                 workoutCategory.setText("");
 
-                System.out.println(workoutExercises);
-                return new WorkoutController().createWorkout(name, category, workoutExercises, date);
+                SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
+                int userId = Integer.parseInt(prefs.getString("userId", null));
+                return new WorkoutController().createWorkout(userId, name, category, workoutExercises, date);
             }
 
             @Override

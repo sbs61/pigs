@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Workout {
     private Long id;
-    private Long userId;
+    private int userId;
     private String name;
     private String category;
     private List<String> exercises;
@@ -17,7 +17,7 @@ public class Workout {
     public Workout() {
     }
 
-    public Workout(Long id, Long userId, String name, String category, List<String> exercises, String date) {
+    public Workout(Long id, int userId, String name, String category, List<String> exercises, String date) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -34,11 +34,11 @@ public class Workout {
         this.id = id;
     }
 
-    public Long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

@@ -15,8 +15,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 
@@ -30,9 +32,12 @@ import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.controllers.ProgressController;
 import com.example.pigs.entities.Exercise;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class ProgressActivity extends AppCompatActivity {
     private static final String TAG = "ProgressActivity";
@@ -40,6 +45,9 @@ public class ProgressActivity extends AppCompatActivity {
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private DrawerLayout drawerLayout;
+    private Spinner dropdown;
+    private ArrayAdapter<String> adapter;
+    private List<String> exerciseList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +60,9 @@ public class ProgressActivity extends AppCompatActivity {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
+        exerciseList = new ArrayList<String>();
+        dropdown = (Spinner)findViewById(R.id.dropdown2);
+        getExercises();
         // Create drawer layout
         drawerLayout = findViewById(R.id.drawer_layout);
 
@@ -136,9 +146,7 @@ public class ProgressActivity extends AppCompatActivity {
             @SuppressLint("WrongThread")
             protected Boolean doInBackground(Object... params) {
                 // Get info from input
-                // TODO: Exercise name should be a dropdown menu not a text input
-                EditText e = (EditText) findViewById(R.id.exercise);
-                String exercise = e.getText().toString();
+                String exercise = dropdown.getSelectedItem().toString();
                 EditText w = (EditText) findViewById(R.id.weights);
                 double weights = Double.parseDouble(w.getText().toString());
                 EditText r = (EditText) findViewById(R.id.reps);
@@ -162,6 +170,45 @@ public class ProgressActivity extends AppCompatActivity {
         };
 
         progressPostTask.execute();
+    }
+
+    public void getExercises(){
+        @SuppressLint("StaticFieldLeak")
+        AsyncTask<Object, Void, String> getExercisesTask = new AsyncTask<Object, Void, String>() {
+            @Override
+            @SuppressLint("WrongThread")
+            protected String doInBackground(Object... params) {
+                return new ExerciseController().getAllExercises();
+            }
+
+            @Override
+            protected void onPostExecute(String items) {
+                Gson gson = new Gson();
+                if(items != null) {
+                    List<Exercise> list = gson.fromJson(items, new TypeToken<List<Exercise>>() {}.getType());
+
+                    for (Exercise element : list) {
+                        // Create a List from String Array elements
+                        exerciseList.add(element.getName());
+
+                        System.out.println(exerciseList);
+                    }
+                    exerciseList.add("Select an exercise");
+
+                    adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, exerciseList) {
+                        @Override
+                        public int getCount() {
+                            return super.getCount()-1; // you dont display last item. It is used as hint.
+                        }
+                    };
+
+                    dropdown.setAdapter(adapter);
+                    dropdown.setSelection(adapter.getCount());
+                }
+            }
+        };
+
+        getExercisesTask.execute();
     }
 
     // View progress button handler, go to GraphActivity

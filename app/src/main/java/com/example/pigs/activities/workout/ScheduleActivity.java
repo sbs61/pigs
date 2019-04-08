@@ -2,6 +2,7 @@ package com.example.pigs.activities.workout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -132,7 +133,9 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             @SuppressLint("WrongThread")
             protected String doInBackground(Object... params) {
-                return new WorkoutController().getAllWorkouts(1);
+                SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
+                int userId = Integer.parseInt(prefs.getString("userId", null));
+                return new WorkoutController().getAllWorkouts(userId);
             }
 
             @Override

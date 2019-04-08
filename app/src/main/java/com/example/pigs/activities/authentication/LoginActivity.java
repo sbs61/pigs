@@ -2,6 +2,7 @@ package com.example.pigs.activities.authentication;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -71,6 +72,10 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println("wow" + items);
                 if(items != null){
                     if(!items.equals("")) {
+                        SharedPreferences.Editor editor = getSharedPreferences("user", MODE_PRIVATE).edit();
+                        editor.putString("userId", items);
+                        editor.apply();
+
                         Intent i = new Intent(LoginActivity.this, ExercisesActivity.class);
                         startActivity(i);
                     }

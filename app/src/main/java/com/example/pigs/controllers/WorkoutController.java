@@ -48,8 +48,8 @@ public class WorkoutController {
         return jsonString;
     }
 
-    public Boolean createWorkout(String name, String category, List<String> exercises, String date) {
-        Workout w = new Workout(null, 1L, name, category, exercises, date);
+    public Boolean createWorkout(int userId, String name, String category, List<String> exercises, String date) {
+        Workout w = new Workout(null, userId, name, category, exercises, date);
         String url = "https://hugbun2.herokuapp.com/workout";
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(w);
