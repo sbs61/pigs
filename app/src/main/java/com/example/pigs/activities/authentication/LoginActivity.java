@@ -69,13 +69,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(String items) {
                 System.out.println("wow" + items);
-                if(items != null){
-                    if(!items.equals("")) {
-                        Intent i = new Intent(LoginActivity.this, ExercisesActivity.class);
-                        startActivity(i);
-                    }
+                if(items != null && !items.equals("")){
+                    incorrect.setVisibility(View.GONE);
+                    Intent i = new Intent(LoginActivity.this, ExercisesActivity.class);
+                    startActivity(i);
+                } else {
+                    incorrect.setVisibility(View.VISIBLE);
                 }
-                incorrect.setVisibility(View.VISIBLE);
             }
         };
         loginTask.execute();
