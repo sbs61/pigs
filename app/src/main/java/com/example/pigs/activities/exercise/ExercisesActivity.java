@@ -2,6 +2,7 @@ package com.example.pigs.activities.exercise;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -189,6 +190,13 @@ public class ExercisesActivity extends AppCompatActivity {
         };
 
         task.execute();
+    }
+
+    public void logout(View textView){
+        SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
+        prefs.edit().clear().apply();
+        Intent i = new Intent(ExercisesActivity.this, LoginActivity.class);
+        startActivity(i);
     }
 
     // Go back button handler

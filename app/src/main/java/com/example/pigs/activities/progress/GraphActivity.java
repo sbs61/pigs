@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.support.v7.widget.Toolbar;
 
 import com.example.pigs.R;
+import com.example.pigs.activities.authentication.LoginActivity;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
@@ -158,6 +159,13 @@ public class GraphActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+    public void logout(View textView){
+        SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
+        prefs.edit().clear().apply();
+        Intent i = new Intent(GraphActivity.this, LoginActivity.class);
+        startActivity(i);
     }
 
     // Draw graph for selected exercise

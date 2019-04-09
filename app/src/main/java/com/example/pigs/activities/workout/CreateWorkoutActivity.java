@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.example.pigs.R;
+import com.example.pigs.activities.authentication.LoginActivity;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.controllers.ExerciseController;
@@ -263,6 +264,13 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         };
 
         createWorkoutTask.execute();
+    }
+
+    public void logout(View textView){
+        SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
+        prefs.edit().clear().apply();
+        Intent i = new Intent(CreateWorkoutActivity.this, LoginActivity.class);
+        startActivity(i);
     }
 
     // Menu button handler

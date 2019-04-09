@@ -27,6 +27,7 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import com.example.pigs.R;
+import com.example.pigs.activities.authentication.LoginActivity;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
@@ -220,6 +221,13 @@ public class ProgressActivity extends AppCompatActivity {
         };
 
         getExercisesTask.execute();
+    }
+
+    public void logout(View textView){
+        SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
+        prefs.edit().clear().apply();
+        Intent i = new Intent(ProgressActivity.this, LoginActivity.class);
+        startActivity(i);
     }
 
     // View progress button handler, go to GraphActivity

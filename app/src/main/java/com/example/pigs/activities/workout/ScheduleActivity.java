@@ -12,12 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pigs.R;
+import com.example.pigs.activities.authentication.LoginActivity;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.controllers.ExerciseController;
@@ -159,6 +161,13 @@ public class ScheduleActivity extends AppCompatActivity {
         };
 
         getWorkoutsTask.execute();
+    }
+
+    public void logout(View textView){
+        SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
+        prefs.edit().clear().apply();
+        Intent i = new Intent(ScheduleActivity.this, LoginActivity.class);
+        startActivity(i);
     }
 
     // Menu button handler

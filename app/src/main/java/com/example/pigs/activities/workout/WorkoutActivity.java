@@ -164,6 +164,13 @@ public class WorkoutActivity extends AppCompatActivity {
         getWorkoutsTask.execute();
     }
 
+    public void logout(View textView){
+        SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
+        prefs.edit().clear().apply();
+        Intent i = new Intent(WorkoutActivity.this, LoginActivity.class);
+        startActivity(i);
+    }
+
     // Menu button handler
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

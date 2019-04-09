@@ -2,6 +2,7 @@ package com.example.pigs.activities.exercise;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.example.pigs.R;
+import com.example.pigs.activities.authentication.LoginActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
@@ -91,6 +93,13 @@ public class CreateExerciseActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+    public void logout(View textView){
+        SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
+        prefs.edit().clear().apply();
+        Intent i = new Intent(CreateExerciseActivity.this, LoginActivity.class);
+        startActivity(i);
     }
 
     // Create exercise button handler executes an Asyncronous task to add exercise to database
