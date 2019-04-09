@@ -23,6 +23,7 @@ import com.example.pigs.activities.authentication.LoginActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
+import com.example.pigs.activities.workout.WorkoutActivity;
 import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.entities.Exercise;
 import com.google.gson.Gson;
@@ -73,7 +74,7 @@ public class ExercisesActivity extends AppCompatActivity {
                         // Handle navigation
                         switch(menuItem.getItemId()){
                             case R.id.nav_workouts:{
-                                Intent i = new Intent(ExercisesActivity.this, CreateWorkoutActivity.class);
+                                Intent i = new Intent(ExercisesActivity.this, WorkoutActivity.class);
                                 startActivity(i);
                                 break;
                             }

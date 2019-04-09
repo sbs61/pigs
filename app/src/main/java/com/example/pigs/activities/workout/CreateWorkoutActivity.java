@@ -23,6 +23,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -115,6 +116,11 @@ public class CreateWorkoutActivity extends AppCompatActivity {
                         switch(menuItem.getItemId()){
                             case R.id.nav_exercises:{
                                 Intent i = new Intent(CreateWorkoutActivity.this, ExercisesActivity.class);
+                                startActivity(i);
+                                break;
+                            }
+                            case R.id.nav_workouts:{
+                                Intent i = new Intent(CreateWorkoutActivity.this, WorkoutActivity.class);
                                 startActivity(i);
                                 break;
                             }
@@ -239,8 +245,6 @@ public class CreateWorkoutActivity extends AppCompatActivity {
                 String category = workoutCategory.getText().toString();
                 String date = mDisplayDate.getText().toString();
 
-                // TODO: Get selected exercises from list and add to workout
-
                 workoutName.setText("");
                 workoutCategory.setText("");
 
@@ -252,8 +256,9 @@ public class CreateWorkoutActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Boolean items) {
                 System.out.println(items);
-                workoutExercises = new ArrayList<String>();
+                workoutExercises.clear();
                 arrayAdapter.notifyDataSetChanged();
+                Toast.makeText(getApplicationContext(), "Workout Created!", Toast.LENGTH_LONG).show();
             }
         };
 

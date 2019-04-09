@@ -3,6 +3,7 @@ package com.example.pigs.activities.progress;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -21,6 +22,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,6 +30,7 @@ import com.example.pigs.R;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
+import com.example.pigs.activities.workout.WorkoutActivity;
 import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.controllers.ProgressController;
 import com.example.pigs.entities.Exercise;
@@ -84,7 +87,7 @@ public class ProgressActivity extends AppCompatActivity {
                                 break;
                             }
                             case R.id.nav_workouts:{
-                                Intent i = new Intent(ProgressActivity.this, CreateWorkoutActivity.class);
+                                Intent i = new Intent(ProgressActivity.this, WorkoutActivity.class);
                                 startActivity(i);
                                 break;
                             }
@@ -160,12 +163,20 @@ public class ProgressActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 Exercise[] ex = gson.fromJson(jsonEx, Exercise[].class);
 
-                return new ProgressController().createProgress(ex[0].getName(), reps, sets, weights, date);
+                SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
+                int userId = Integer.parseInt(prefs.getString("userId", null));
+                return new ProgressController().createProgress(ex[0].getId(), userId, reps, sets, weights, date);
             }
 
             @Override
             protected void onPostExecute(Boolean items) {
-
+                EditText w = (EditText) findViewById(R.id.weights);
+                EditText r = (EditText) findViewById(R.id.reps);
+                EditText s = (EditText) findViewById(R.id.sets);
+                w.setText("");
+                r.setText("");
+                s.setText("");
+                Toast.makeText(getApplicationContext(), "Progress Added!", Toast.LENGTH_LONG).show();
             }
         };
 

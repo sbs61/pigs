@@ -15,10 +15,13 @@ import android.widget.Spinner;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
+
 import com.example.pigs.R;
 import com.example.pigs.activities.progress.ProgressActivity;
 import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
+import com.example.pigs.activities.workout.WorkoutActivity;
 import com.example.pigs.controllers.ExerciseController;
 
 public class CreateExerciseActivity extends AppCompatActivity {
@@ -70,7 +73,7 @@ public class CreateExerciseActivity extends AppCompatActivity {
                                 break;
                             }
                             case R.id.nav_workouts:{
-                                Intent i = new Intent(CreateExerciseActivity.this, CreateWorkoutActivity.class);
+                                Intent i = new Intent(CreateExerciseActivity.this, WorkoutActivity.class);
                                 startActivity(i);
                                 break;
                             }
@@ -121,6 +124,7 @@ public class CreateExerciseActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Boolean items) {
                 System.out.println(items);
+                Toast.makeText(getApplicationContext(), "Exercise Created!", Toast.LENGTH_LONG).show();
             }
         };
         task.execute();

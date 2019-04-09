@@ -24,8 +24,8 @@ public class ProgressController {
     public static final String TAG = GraphActivity.class.getSimpleName();
 
     // POST progress to api
-    public Boolean createProgress(String name, int reps, int sets, Double weight, String date) {
-        Progress pr = new Progress(null, 1L, 1L, sets, reps, weight, date);
+    public Boolean createProgress(long exerciseId, long userId, int reps, int sets, Double weight, String date) {
+        Progress pr = new Progress(null, exerciseId, userId, sets, reps, weight, date);
         String url = "https://hugbun2.herokuapp.com/progress";
         Gson gson = new GsonBuilder().create();
         String json = gson.toJson(pr);
