@@ -39,6 +39,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -188,13 +189,7 @@ public class GraphActivity extends AppCompatActivity {
 
                     Calendar calendar = Calendar.getInstance();
                     LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
-                    Date wow = null;
-                    try {
-                        wow = new SimpleDateFormat("yyyy-MM-dd").parse(list.get(0).getDate());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    minDate = wow.getTime();
+                    List<Long> dates = new ArrayList<>();
                     for (Progress element : list) {
                         // Only show progress for selected exercise
                         exerciseIds.add(element.getExerciseId());
@@ -205,6 +200,7 @@ public class GraphActivity extends AppCompatActivity {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
+                            dates.add(date.getTime());
                             // Add data points to graph
                             series.appendData(new DataPoint(date.getTime(), element.getWeight()), true, 100);
                             minWeights = element.getWeight();
@@ -212,6 +208,10 @@ public class GraphActivity extends AppCompatActivity {
                         }
                     }
 
+                    if(dates.size()==1){
+                        maxDate = minDate + 1;
+                    }
+                    minDate = dates.get(0);
                     series.setDrawDataPoints(true);
                     graph.addSeries(series);
 
