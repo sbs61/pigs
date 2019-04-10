@@ -33,6 +33,7 @@ import com.google.gson.reflect.TypeToken;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -51,6 +52,9 @@ public class GraphActivity extends AppCompatActivity {
     private GraphView graph;
     private GridLabelRenderer gridLabel;
     private long selectedExerciseId = 1;
+    private long maxDate = 0;
+    private long minDate;
+    private double minWeights = 0;
     Set<Long> exerciseIds = new LinkedHashSet<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,17 +63,8 @@ public class GraphActivity extends AppCompatActivity {
         context = this;
 
         graph = (GraphView) findViewById(R.id.graph);
-
-        // set date label formatter
         gridLabel = graph.getGridLabelRenderer();
-        gridLabel.setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this));
-        // set number of labels
-        gridLabel.setNumHorizontalLabels(4);
-        gridLabel.setNumVerticalLabels(6);
-
-        // Round numbers
-        graph.getGridLabelRenderer().setHumanRounding(true, true);
-        graph.getGridLabelRenderer().setPadding(32);
+        gridLabel.setPadding(32);
 
         Spinner exercise = (Spinner)findViewById(R.id.selectedExercise);
 
@@ -171,6 +166,7 @@ public class GraphActivity extends AppCompatActivity {
     // Draw graph for selected exercise
     public void drawGraph() {
         graph.removeAllSeries();
+        graph.getGridLabelRenderer().resetStyles();
         // Fetch progress by id with async task
         @SuppressLint("StaticFieldLeak")
         AsyncTask<Object, Void, String> getProgressTask = new AsyncTask<Object, Void, String>() {
@@ -191,9 +187,14 @@ public class GraphActivity extends AppCompatActivity {
                     }.getType());
 
                     Calendar calendar = Calendar.getInstance();
-                    Date minDate = calendar.getTime();
-                    double minWeights = 0;
                     LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
+                    Date wow = null;
+                    try {
+                        wow = new SimpleDateFormat("yyyy-MM-dd").parse(list.get(0).getDate());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    minDate = wow.getTime();
                     for (Progress element : list) {
                         // Only show progress for selected exercise
                         exerciseIds.add(element.getExerciseId());
@@ -205,20 +206,23 @@ public class GraphActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                             // Add data points to graph
-                            series.appendData(new DataPoint(date.getTime(), element.getWeight()), true, 40);
+                            series.appendData(new DataPoint(date.getTime(), element.getWeight()), true, 100);
                             minWeights = element.getWeight();
+                            maxDate = date.getTime();
                         }
                     }
 
                     series.setDrawDataPoints(true);
                     graph.addSeries(series);
 
-                    gridLabel = graph.getGridLabelRenderer();
                     gridLabel.setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this));
-                    gridLabel.setNumHorizontalLabels(4); // only 4 because of the space
-                    gridLabel.setNumVerticalLabels(6);
+                    gridLabel.setNumHorizontalLabels(4);
 
                     graph.getViewport().setMinY(minWeights-10);
+                    graph.getViewport().setMinX(minDate);
+                    graph.getViewport().setMaxX(maxDate);
+                    graph.getViewport().setXAxisBoundsManual(true);
+                    graph.getViewport().setYAxisBoundsManual(true);
                 }
             }
         };
