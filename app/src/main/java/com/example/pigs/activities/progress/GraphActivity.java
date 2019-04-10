@@ -55,7 +55,8 @@ public class GraphActivity extends AppCompatActivity {
     private long selectedExerciseId = 1;
     private long maxDate = 0;
     private long minDate;
-    private double minWeights = 0;
+    private double maxWeights = 0;
+    private double minWeights = 10000;
     Set<Long> exerciseIds = new LinkedHashSet<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,8 +167,9 @@ public class GraphActivity extends AppCompatActivity {
 
     // Draw graph for selected exercise
     public void drawGraph() {
+        minWeights = 1000000;
+        maxWeights = 0;
         graph.removeAllSeries();
-        graph.getGridLabelRenderer().resetStyles();
         // Fetch progress by id with async task
         @SuppressLint("StaticFieldLeak")
         AsyncTask<Object, Void, String> getProgressTask = new AsyncTask<Object, Void, String>() {
@@ -186,10 +188,10 @@ public class GraphActivity extends AppCompatActivity {
                 if(items != null) {
                     List<Progress> list = gson.fromJson(items, new TypeToken<List<Progress>>() {
                     }.getType());
-
                     Calendar calendar = Calendar.getInstance();
                     LineGraphSeries<DataPoint> series = new LineGraphSeries<>();
                     List<Long> dates = new ArrayList<>();
+                    List<Double> weights = new ArrayList<>();
                     for (Progress element : list) {
                         // Only show progress for selected exercise
                         exerciseIds.add(element.getExerciseId());
@@ -201,6 +203,7 @@ public class GraphActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                             dates.add(date.getTime());
+                            weights.add(element.getWeight());
                             // Add data points to graph
                             series.appendData(new DataPoint(date.getTime(), element.getWeight()), true, 100);
                             minWeights = element.getWeight();
@@ -211,6 +214,14 @@ public class GraphActivity extends AppCompatActivity {
                     if(dates.size()==1){
                         maxDate = minDate + 1;
                     }
+                    for(int i = 0; i < weights.size(); i++) {
+                        if (minWeights > weights.get(i)) {
+                            minWeights = weights.get(i);
+                        }
+                        if(maxWeights < weights.get(i)){
+                            maxWeights = weights.get(i);
+                        }
+                    }
                     minDate = dates.get(0);
                     series.setDrawDataPoints(true);
                     graph.addSeries(series);
@@ -218,7 +229,8 @@ public class GraphActivity extends AppCompatActivity {
                     gridLabel.setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this));
                     gridLabel.setNumHorizontalLabels(4);
 
-                    graph.getViewport().setMinY(minWeights-10);
+                    graph.getViewport().setMinY(minWeights-5);
+                    graph.getViewport().setMaxY(maxWeights+5);
                     graph.getViewport().setMinX(minDate);
                     graph.getViewport().setMaxX(maxDate);
                     graph.getViewport().setXAxisBoundsManual(true);
