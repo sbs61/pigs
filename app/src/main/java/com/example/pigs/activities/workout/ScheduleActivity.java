@@ -11,10 +11,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +48,7 @@ public class ScheduleActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private String selectedDate;
     private TextView foundWorkout;
+    private LinearLayout workouts;
     private Boolean found;
 
     @Override
@@ -51,6 +56,7 @@ public class ScheduleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
         found = false;
+        workouts = findViewById(R.id.workouts);
 
         // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -145,16 +151,35 @@ public class ScheduleActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 if(items != null) {
                     List<Workout> list = gson.fromJson(items, new TypeToken<List<Workout>>() {}.getType());
+                    workouts.removeAllViews();
 
                     for (Workout element : list) {
-                        // Create a List from String Array elements
-                        if(selectedDate.equals(element.getDate())){
-                            foundWorkout.setText(element.getName());
+                        if(selectedDate.equals(element.getDate())) {
+                            // Create a List from String Array elements
+                            TextView workoutName = new TextView(getApplicationContext());
+                            workoutName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+                            workoutName.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                            SpannableString content = new SpannableString(element.getName());
+                            content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                            workoutName.setText(content);
+                            workouts.addView(workoutName);
+                            for (String exercise : element.getExercises()) {
+                                TextView workoutExercise = new TextView(getApplicationContext());
+                                workoutExercise.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                                workoutExercise.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                workoutExercise.setText(exercise);
+                                workouts.addView(workoutExercise);
+                            }
                             found = true;
                         }
                     }
+
                     if(found == false){
-                        foundWorkout.setText("No workout found");
+                        TextView notFound = new TextView(getApplicationContext());
+                        notFound.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+                        notFound.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                        notFound.setText("No workout found");
+                        workouts.addView(notFound);
                     }
                 }
             }
