@@ -3,6 +3,7 @@ package com.example.pigs.activities.workout;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -149,6 +150,12 @@ public class WorkoutActivity extends AppCompatActivity {
                         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
                         workoutName.setText(content);
                         workouts.addView(workoutName);
+                        TextView workoutDate = new TextView(getApplicationContext());
+                        workoutDate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                        workoutDate.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                        workoutDate.setTypeface(null, Typeface.ITALIC);
+                        workoutDate.setText("Date: " + element.getDate().split("T")[0]);
+                        workouts.addView(workoutDate);
                         for(String exercise : element.getExercises()){
                             TextView workoutExercise = new TextView(getApplicationContext());
                             workoutExercise.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
