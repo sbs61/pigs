@@ -52,11 +52,18 @@ public class ProgressActivity extends AppCompatActivity {
     private Spinner dropdown;
     private ArrayAdapter<String> adapter;
     private List<String> exerciseList;
+    private EditText weights;
+    private EditText sets;
+    private EditText reps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
+
+        weights = (EditText) findViewById(R.id.weights);
+        sets = (EditText) findViewById(R.id.sets);
+        reps = (EditText) findViewById(R.id.reps);
 
         // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -141,47 +148,57 @@ public class ProgressActivity extends AppCompatActivity {
         };
     }
 
+    public boolean validation() {
+        if(!weights.getText().toString().equals("") && !reps.getText().toString().equals("")
+            && !sets.getText().toString().equals("")
+            && !dropdown.getSelectedItem().toString().equals("Select an exercise")){
+            return true;
+        }
+        return false;
+    }
+
     // Add progress button handler
     public void addProgress(View button){
-        // Async task to add progress to database
-        @SuppressLint("StaticFieldLeak")
-        AsyncTask<Object, Void, Boolean> progressPostTask = new AsyncTask<Object, Void, Boolean>() {
-            @Override
-            @SuppressLint("WrongThread")
-            protected Boolean doInBackground(Object... params) {
-                // Get info from input
-                String exercise = dropdown.getSelectedItem().toString();
-                EditText w = (EditText) findViewById(R.id.weights);
-                double weights = Double.parseDouble(w.getText().toString());
-                EditText r = (EditText) findViewById(R.id.reps);
-                int reps = Integer.parseInt(r.getText().toString());
-                EditText s = (EditText) findViewById(R.id.sets);
-                int sets = Integer.parseInt(s.getText().toString());
-                String date = mDisplayDate.getText().toString();
+        if(validation()) {
+            // Async task to add progress to database
+            @SuppressLint("StaticFieldLeak")
+            AsyncTask<Object, Void, Boolean> progressPostTask = new AsyncTask<Object, Void, Boolean>() {
+                @Override
+                @SuppressLint("WrongThread")
+                protected Boolean doInBackground(Object... params) {
+                    // Get info from input
+                    String exercise = dropdown.getSelectedItem().toString();
+                    double w = Double.parseDouble(weights.getText().toString());
+                    int r = Integer.parseInt(reps.getText().toString());
+                    int s = Integer.parseInt(sets.getText().toString());
+                    String date = mDisplayDate.getText().toString();
 
-                ExerciseController ec = new ExerciseController();
-                String jsonEx = ec.getExercises(exercise);
-                Gson gson = new Gson();
-                Exercise[] ex = gson.fromJson(jsonEx, Exercise[].class);
+                    ExerciseController ec = new ExerciseController();
+                    String jsonEx = ec.getExercises(exercise);
+                    Gson gson = new Gson();
+                    Exercise[] ex = gson.fromJson(jsonEx, Exercise[].class);
 
-                SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
-                int userId = Integer.parseInt(prefs.getString("userId", null));
-                return new ProgressController().createProgress(ex[0].getId(), userId, reps, sets, weights, date);
-            }
+                    SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
+                    int userId = Integer.parseInt(prefs.getString("userId", null));
+                    return new ProgressController().createProgress(ex[0].getId(), userId, r, s, w, date);
+                }
 
-            @Override
-            protected void onPostExecute(Boolean items) {
-                EditText w = (EditText) findViewById(R.id.weights);
-                EditText r = (EditText) findViewById(R.id.reps);
-                EditText s = (EditText) findViewById(R.id.sets);
-                w.setText("");
-                r.setText("");
-                s.setText("");
-                Toast.makeText(getApplicationContext(), "Progress Added!", Toast.LENGTH_LONG).show();
-            }
-        };
+                @Override
+                protected void onPostExecute(Boolean items) {
+                    EditText w = (EditText) findViewById(R.id.weights);
+                    EditText r = (EditText) findViewById(R.id.reps);
+                    EditText s = (EditText) findViewById(R.id.sets);
+                    w.setText("");
+                    r.setText("");
+                    s.setText("");
+                    Toast.makeText(getApplicationContext(), "Progress Added!", Toast.LENGTH_LONG).show();
+                }
+            };
 
-        progressPostTask.execute();
+            progressPostTask.execute();
+        } else {
+            Toast.makeText(getApplicationContext(), "Please fill out all fields correctly", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void getExercises(){

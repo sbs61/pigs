@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // Handler for login button, take input from username and password fields
     public void userLogin(View button){
+        incorrect.setVisibility(View.GONE);
         @SuppressLint("StaticFieldLeak")
         AsyncTask<Object, Void, String> loginTask = new AsyncTask<Object, Void, String>() {
             @Override
@@ -73,7 +74,6 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = getSharedPreferences("user", MODE_PRIVATE).edit();
                     editor.putString("userId", items);
                     editor.apply();
-                    incorrect.setVisibility(View.GONE);
                     Intent i = new Intent(LoginActivity.this, ExercisesActivity.class);
                     startActivity(i);
                 } else {

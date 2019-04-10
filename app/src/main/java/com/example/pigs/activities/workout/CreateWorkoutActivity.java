@@ -77,6 +77,9 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_workout);
         exerciseController = new ExerciseController();
 
+        workoutName  = findViewById(R.id.workoutName);
+        workoutCategory = findViewById(R.id.workoutCategory);
+
         workoutExercises = new ArrayList<String>();
         exerciseList = new ArrayList<String>();
         dropdown = (Spinner)findViewById(R.id.dropdown);
@@ -192,9 +195,13 @@ public class CreateWorkoutActivity extends AppCompatActivity {
     }
 
     public void addExercise(View button){
-        String ex = dropdown.getSelectedItem().toString();
-        workoutExercises.add(ex);
-        arrayAdapter.notifyDataSetChanged();
+        if(!dropdown.getSelectedItem().toString().equals("Select an exercise")) {
+            String ex = dropdown.getSelectedItem().toString();
+            workoutExercises.add(ex);
+            arrayAdapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(getApplicationContext(), "Select an exercise", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void getExercises(){
@@ -236,34 +243,37 @@ public class CreateWorkoutActivity extends AppCompatActivity {
 
     // Create a new workout method
     public void createWorkoutPost(View button){
-        @SuppressLint("StaticFieldLeak")
-        AsyncTask<Object, Void, Boolean> createWorkoutTask = new AsyncTask<Object, Void, Boolean>() {
-            @Override
-            protected Boolean doInBackground(Object... params) {
-                workoutName  = findViewById(R.id.workoutName);
-                String name = workoutName.getText().toString();
-                workoutCategory = findViewById(R.id.workoutCategory);
-                String category = workoutCategory.getText().toString();
-                String date = mDisplayDate.getText().toString();
+        if(!workoutName.getText().toString().equals("") && !workoutCategory.getText().toString().equals("")
+        && workoutExercises.size() != 0) {
+            @SuppressLint("StaticFieldLeak")
+            AsyncTask<Object, Void, Boolean> createWorkoutTask = new AsyncTask<Object, Void, Boolean>() {
+                @Override
+                protected Boolean doInBackground(Object... params) {
+                    String name = workoutName.getText().toString();
+                    String category = workoutCategory.getText().toString();
+                    String date = mDisplayDate.getText().toString();
 
-                workoutName.setText("");
-                workoutCategory.setText("");
+                    workoutName.setText("");
+                    workoutCategory.setText("");
 
-                SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
-                int userId = Integer.parseInt(prefs.getString("userId", null));
-                return new WorkoutController().createWorkout(userId, name, category, workoutExercises, date);
-            }
+                    SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
+                    int userId = Integer.parseInt(prefs.getString("userId", null));
+                    return new WorkoutController().createWorkout(userId, name, category, workoutExercises, date);
+                }
 
-            @Override
-            protected void onPostExecute(Boolean items) {
-                System.out.println(items);
-                workoutExercises.clear();
-                arrayAdapter.notifyDataSetChanged();
-                Toast.makeText(getApplicationContext(), "Workout Created!", Toast.LENGTH_LONG).show();
-            }
-        };
+                @Override
+                protected void onPostExecute(Boolean items) {
+                    System.out.println(items);
+                    workoutExercises.clear();
+                    arrayAdapter.notifyDataSetChanged();
+                    Toast.makeText(getApplicationContext(), "Workout Created!", Toast.LENGTH_LONG).show();
+                }
+            };
 
-        createWorkoutTask.execute();
+            createWorkoutTask.execute();
+        } else {
+            Toast.makeText(getApplicationContext(), "Please fill out each field correctly", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void logout(View textView){

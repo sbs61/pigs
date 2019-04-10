@@ -29,14 +29,19 @@ import com.example.pigs.controllers.ExerciseController;
 public class CreateExerciseActivity extends AppCompatActivity {
     private ExerciseController exerciseController;
     private DrawerLayout drawerLayout;
+    private EditText name;
+    private Spinner dropdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_exercise);
 
+        name = (EditText)findViewById(R.id.exercise_name);
+        dropdown = (Spinner) findViewById(R.id.spinner);
+
         // Dropdown menu for categories
-        Spinner dropdown = findViewById(R.id.spinner);
+        dropdown = findViewById(R.id.spinner);
         String[] items = new String[]{"Arms", "Back", "Chest", "Core", "Legs", "Shoulders", "Pick a category"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items) {
             @Override
@@ -104,39 +109,42 @@ public class CreateExerciseActivity extends AppCompatActivity {
 
     // Create exercise button handler executes an Asyncronous task to add exercise to database
     public void createExercise(View button){
-        @SuppressLint("StaticFieldLeak")
-        AsyncTask<Object, Void, Boolean> task = new AsyncTask<Object, Void, Boolean>() {
-            @Override
-            protected Boolean doInBackground(Object... params) {
-                EditText name = (EditText) findViewById(R.id.exercise_name);
-                String exercise_name = name.getText().toString();
-                EditText category = (EditText) findViewById(R.id.exercise_category);
-                Spinner dropdown = (Spinner) findViewById(R.id.spinner);
-                String exercise_category = dropdown.getSelectedItem().toString();
+        if(!name.getText().toString().equals("") && !dropdown.getSelectedItem().toString().equals("Pick a category")) {
+            @SuppressLint("StaticFieldLeak")
+            AsyncTask<Object, Void, Boolean> task = new AsyncTask<Object, Void, Boolean>() {
+                @Override
+                protected Boolean doInBackground(Object... params) {
+                    String exercise_name = name.getText().toString();
+                    Spinner dropdown = (Spinner) findViewById(R.id.spinner);
+                    String exercise_category = dropdown.getSelectedItem().toString();
 
-                // Validate fields are not empty
-                if(exercise_name != "" && exercise_category != "") {
-                    name.setText("");
-                    dropdown.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            dropdown.setSelection(6);
-                        }
-                    });
+                    // Validate fields are not empty
+                    if (exercise_name != "" && exercise_category != "") {
+                        name.setText("");
+                        dropdown.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                dropdown.setSelection(6);
+                            }
+                        });
 
-                    // Call create exercise function from controller
-                    return new ExerciseController().createExercise(exercise_name, exercise_category);
+                        // Call create exercise function from controller
+                        return new ExerciseController().createExercise(exercise_name, exercise_category);
+                    }
+                    return null;
                 }
-                return null;
-            }
 
-            @Override
-            protected void onPostExecute(Boolean items) {
-                System.out.println(items);
-                Toast.makeText(getApplicationContext(), "Exercise Created!", Toast.LENGTH_LONG).show();
-            }
-        };
-        task.execute();
+                @Override
+                protected void onPostExecute(Boolean items) {
+                    System.out.println(items);
+                    Toast.makeText(getApplicationContext(), "Exercise Created!", Toast.LENGTH_LONG).show();
+                }
+            };
+            task.execute();
+        } else {
+            Toast.makeText(getApplicationContext(), "Please give the exercise a valid name " +
+                    "and category", Toast.LENGTH_LONG).show();
+        }
     }
 
     // Menu button handler
