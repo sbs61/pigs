@@ -72,7 +72,7 @@ public class RegistrationActivity extends AppCompatActivity {
             };
             registerTask.execute();
         } else {
-            Toast.makeText(getApplicationContext(), "One does not simply" +
+            Toast.makeText(getApplicationContext(), "One does not simply " +
                     "leave a field empty when creating a user", Toast.LENGTH_LONG).show();
         }
     }
