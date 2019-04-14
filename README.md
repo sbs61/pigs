@@ -1,8 +1,8 @@
 # PIGS Workout Tracker
 
 ## Setup
-Clone this repo
-Import into android studio
+Clone this repo  
+Import into android studio  
 Run with Pixel 2 API 28
  
 Application uses API that runs on Heroku, it may need some
