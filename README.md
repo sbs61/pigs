@@ -2,7 +2,7 @@
 
 ## Setup
 Clone this repo  
-Open Android Studio and it Import project and select the project folder 
+Open Android Studio and it Import project and select the project folder  
 Run with Pixel 2 API 28
  
 Application uses API that runs on Heroku, it may need some
