@@ -4,39 +4,18 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
 
-import com.example.pigs.MainActivity;
 import com.example.pigs.R;
 import com.example.pigs.activities.exercise.ExercisesActivity;
-import com.example.pigs.activities.progress.ProgressActivity;
-import com.example.pigs.activities.workout.CreateWorkoutActivity;
-import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.controllers.AuthenticationController;
-import com.example.pigs.controllers.ExerciseController;
-import com.example.pigs.entities.Exercise;
-
-import java.io.IOException;
-
-/*
- * TODO: NOT IMPLEMENTED YET
- */
 
 public class LoginActivity extends AppCompatActivity {
 
-    private DrawerLayout drawerLayout;
     private TextView incorrect;
 
     @Override

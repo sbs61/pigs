@@ -29,7 +29,6 @@ import java.text.SimpleDateFormat;
 import com.example.pigs.R;
 import com.example.pigs.activities.authentication.LoginActivity;
 import com.example.pigs.activities.exercise.ExercisesActivity;
-import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.activities.workout.WorkoutActivity;
 import com.example.pigs.controllers.ExerciseController;
@@ -45,7 +44,6 @@ import java.util.List;
 
 public class ProgressActivity extends AppCompatActivity {
     private static final String TAG = "ProgressActivity";
-    private ExerciseController exerciseController;
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private DrawerLayout drawerLayout;
@@ -183,6 +181,7 @@ public class ProgressActivity extends AppCompatActivity {
                     return new ProgressController().createProgress(ex[0].getId(), userId, r, s, w, date);
                 }
 
+                // After progress has been added, erase all fields and display a Toast message
                 @Override
                 protected void onPostExecute(Boolean items) {
                     EditText w = (EditText) findViewById(R.id.weights);
@@ -201,6 +200,7 @@ public class ProgressActivity extends AppCompatActivity {
         }
     }
 
+    // Setup dropdown exercise selector
     public void getExercises(){
         @SuppressLint("StaticFieldLeak")
         AsyncTask<Object, Void, String> getExercisesTask = new AsyncTask<Object, Void, String>() {

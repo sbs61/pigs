@@ -7,7 +7,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import com.example.pigs.MainActivity;
 import com.example.pigs.activities.progress.GraphActivity;
 import com.example.pigs.entities.Exercise;
 import com.example.pigs.entities.Progress;

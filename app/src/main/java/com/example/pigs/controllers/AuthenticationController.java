@@ -1,13 +1,8 @@
 package com.example.pigs.controllers;
 
-/*
- * TODO: NOT IMPLEMENTED YET
- */
-
 import android.util.Log;
 
 import com.example.pigs.MainActivity;
-import com.example.pigs.entities.Exercise;
 import com.example.pigs.entities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

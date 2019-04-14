@@ -21,7 +21,6 @@ import android.support.v7.widget.Toolbar;
 import com.example.pigs.R;
 import com.example.pigs.activities.authentication.LoginActivity;
 import com.example.pigs.activities.exercise.ExercisesActivity;
-import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.activities.workout.WorkoutActivity;
 import com.example.pigs.controllers.ExerciseController;
@@ -33,7 +32,6 @@ import com.google.gson.reflect.TypeToken;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
-import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -47,7 +45,6 @@ import java.util.List;
 import java.util.Set;
 
 public class GraphActivity extends AppCompatActivity {
-    private ExerciseController exerciseController;
     private Context context;
     private DrawerLayout drawerLayout;
     private GraphView graph;
@@ -57,6 +54,7 @@ public class GraphActivity extends AppCompatActivity {
     private long minDate;
     private double maxWeights = 0;
     private double minWeights = 10000;
+    private int userId;
     Set<Long> exerciseIds = new LinkedHashSet<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +62,16 @@ public class GraphActivity extends AppCompatActivity {
         setContentView(R.layout.activity_graph);
         context = this;
 
+        // Initialize the graph
         graph = (GraphView) findViewById(R.id.graph);
         gridLabel = graph.getGridLabelRenderer();
         gridLabel.setPadding(32);
 
+        // Initialize logged in userId
+        SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
+        userId = Integer.parseInt(prefs.getString("userId", null));
+
+        // Initialize spinner
         Spinner exercise = (Spinner)findViewById(R.id.selectedExercise);
 
         // Get execises for the spinner that user has added progress for
@@ -76,8 +80,6 @@ public class GraphActivity extends AppCompatActivity {
             @Override
             @SuppressLint("WrongThread")
             protected List<Exercise> doInBackground(Object... params) {
-                SharedPreferences prefs = getSharedPreferences("user", MODE_PRIVATE);
-                int userId = Integer.parseInt(prefs.getString("userId", null));
                 return new ProgressController().getProgressExercises(userId);
             }
 
@@ -86,21 +88,22 @@ public class GraphActivity extends AppCompatActivity {
                 if(names != null) {
                     ArrayAdapter<Exercise> adapter = new ArrayAdapter<Exercise>(context, android.R.layout.simple_spinner_dropdown_item, names) {};
 
+                    // Set adapter for spinner
                     exercise.setAdapter(adapter);
                     exercise.setSelection(0);
                     exercise.setVisibility(View.VISIBLE);
 
+                    // Handle when selected exercise is changed
                     exercise.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                             Exercise selectedEx  = (Exercise) parentView.getSelectedItem();
-                            selectedExerciseId = selectedEx.getId();
-                            drawGraph();
+                            selectedExerciseId = selectedEx.getId(); // set selected exercise
+                            drawGraph(); // Draw the graph again after each change
                         }
 
                         @Override
                         public void onNothingSelected(AdapterView<?> parentView) {
-                            // your code here
                         }
 
                     });
@@ -167,9 +170,10 @@ public class GraphActivity extends AppCompatActivity {
 
     // Draw graph for selected exercise
     public void drawGraph() {
+        // initialize  min and max weights
         minWeights = 1000000;
         maxWeights = 0;
-        graph.removeAllSeries();
+        graph.removeAllSeries(); // start with a fresh graph
         // Fetch progress by id with async task
         @SuppressLint("StaticFieldLeak")
         AsyncTask<Object, Void, String> getProgressTask = new AsyncTask<Object, Void, String>() {
@@ -177,8 +181,7 @@ public class GraphActivity extends AppCompatActivity {
             @Override
             @SuppressLint("WrongThread")
             protected String doInBackground(Object... params) {
-                // TODO: Get id from logged in user when authentication is implemented
-                int userId = 1;
+                // get progress for user
                 return new ProgressController().getProgress(userId);
             }
 
@@ -195,6 +198,7 @@ public class GraphActivity extends AppCompatActivity {
                     for (Progress element : list) {
                         // Only show progress for selected exercise
                         exerciseIds.add(element.getExerciseId());
+                        // check if exercise id matches selected exercise. If not, don't draw it.
                         if(selectedExerciseId == element.getExerciseId()) {
                             Date date = null;
                             try {
@@ -202,6 +206,7 @@ public class GraphActivity extends AppCompatActivity {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
+                            // Add progress date to dates list and weights list
                             dates.add(date.getTime());
                             weights.add(element.getWeight());
                             // Add data points to graph
@@ -211,9 +216,7 @@ public class GraphActivity extends AppCompatActivity {
                         }
                     }
 
-                    if(dates.size()==1){
-                        maxDate = minDate + 1;
-                    }
+                    // use weights list to set graph Y-axis boundaries
                     for(int i = 0; i < weights.size(); i++) {
                         if (minWeights > weights.get(i)) {
                             minWeights = weights.get(i);
@@ -222,13 +225,19 @@ public class GraphActivity extends AppCompatActivity {
                             maxWeights = weights.get(i);
                         }
                     }
+                    // use minDate and maxDate to set X-axis boundaries
                     minDate = dates.get(0);
+                    if(dates.size()==1){
+                        maxDate = minDate + 1;
+                    }
                     series.setDrawDataPoints(true);
                     graph.addSeries(series);
 
+                    // Format labels to display a date
                     gridLabel.setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this));
                     gridLabel.setNumHorizontalLabels(4);
 
+                    // set axis boundaries correctly
                     graph.getViewport().setMinY(minWeights-5);
                     graph.getViewport().setMaxY(maxWeights+5);
                     graph.getViewport().setMinX(minDate);

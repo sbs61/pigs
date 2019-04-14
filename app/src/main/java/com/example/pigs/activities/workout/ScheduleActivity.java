@@ -16,32 +16,20 @@ import android.text.style.UnderlineSpan;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.pigs.R;
 import com.example.pigs.activities.authentication.LoginActivity;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
-import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.controllers.WorkoutController;
-import com.example.pigs.entities.Exercise;
 import com.example.pigs.entities.Workout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-
-/*
- * TODO: NOT FULLY IMPLEMENTED YET
- */
 
 public class ScheduleActivity extends AppCompatActivity {
 
@@ -100,12 +88,6 @@ public class ScheduleActivity extends AppCompatActivity {
                     }
                 });
 
-        // Create day to use for now
-        // TODO: Fetch date from workout to compare to selected date on calendar
-        final int day = 25;
-        final int month2 = 3;
-        final int year2 = 2019;
-
         // Initiate variable for calendar
         CalendarView calendarView = (CalendarView) findViewById(R.id.CalendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -115,6 +97,7 @@ public class ScheduleActivity extends AppCompatActivity {
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 // display the selected date
                 foundWorkout = (TextView) findViewById(R.id.foundWorkout);
+                // format selected date so we can compare to workout dates
                 if(month < 10) {
                     if(dayOfMonth < 10){
                         selectedDate = "" + year + "-0" + (month + 1) + "-0" + dayOfMonth + "T00:00:00.000+0000";
@@ -135,6 +118,7 @@ public class ScheduleActivity extends AppCompatActivity {
         });
     }
 
+    // Fetch all user workouts
     public void getWorkouts(){
         @SuppressLint("StaticFieldLeak")
         AsyncTask<Object, Void, String> getWorkoutsTask = new AsyncTask<Object, Void, String>() {
@@ -154,6 +138,7 @@ public class ScheduleActivity extends AppCompatActivity {
                     workouts.removeAllViews();
 
                     for (Workout element : list) {
+                        // Check if workout date matches selected date
                         if(selectedDate.equals(element.getDate())) {
                             // Create a List from String Array elements
                             TextView workoutName = new TextView(getApplicationContext());
@@ -174,6 +159,7 @@ public class ScheduleActivity extends AppCompatActivity {
                         }
                     }
 
+                    // If no workout date matches selected date
                     if(found == false){
                         TextView notFound = new TextView(getApplicationContext());
                         notFound.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);

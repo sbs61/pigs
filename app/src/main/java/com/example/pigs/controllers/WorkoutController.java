@@ -7,18 +7,12 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import com.example.pigs.MainActivity;
 import com.example.pigs.activities.progress.GraphActivity;
-import com.example.pigs.entities.Exercise;
-import com.example.pigs.entities.Progress;
 import com.example.pigs.entities.Workout;
-import com.example.pigs.entities.WorkoutExercise;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class WorkoutController {

@@ -17,27 +17,16 @@ import android.text.style.UnderlineSpan;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.app.DatePickerDialog;
 import android.util.Log;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import com.example.pigs.R;
 import com.example.pigs.activities.authentication.LoginActivity;
 import com.example.pigs.activities.exercise.ExercisesActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
-import com.example.pigs.controllers.ExerciseController;
 import com.example.pigs.controllers.WorkoutController;
-import com.example.pigs.entities.Exercise;
 import com.example.pigs.entities.Workout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -46,25 +35,9 @@ public class WorkoutActivity extends AppCompatActivity {
 
     private static final String TAG = "WorkoutActivity";
 
-    private ExerciseController exerciseController;
     private DrawerLayout drawerLayout;
 
-    private ListView list;
-    private ArrayList<String> arrayList;
-    private String exercises;
-
-    private TextView mDisplayDate;
     private LinearLayout workouts;
-    private DatePickerDialog.OnDateSetListener mDateSetListener;
-
-    private Spinner dropdown;
-    private ListView listView;
-    private EditText workoutName;
-    private EditText workoutCategory;
-    private List<String> workoutExercises;
-    private List<String> exerciseList;
-    private ArrayAdapter<String> adapter;
-    private ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,11 +92,13 @@ public class WorkoutActivity extends AppCompatActivity {
                 });
     }
 
+    // Handle Create workout button click
     public void goToCreateWorkout(View button){
         Intent i = new Intent(WorkoutActivity.this, CreateWorkoutActivity.class);
         startActivity(i);
     }
 
+    // Get all user workouts and display them
     public void getWorkouts(){
         @SuppressLint("StaticFieldLeak")
         AsyncTask<Object, Void, String> getWorkoutsTask = new AsyncTask<Object, Void, String>() {

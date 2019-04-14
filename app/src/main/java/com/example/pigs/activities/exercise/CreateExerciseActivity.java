@@ -21,13 +21,11 @@ import android.widget.Toast;
 import com.example.pigs.R;
 import com.example.pigs.activities.authentication.LoginActivity;
 import com.example.pigs.activities.progress.ProgressActivity;
-import com.example.pigs.activities.workout.CreateWorkoutActivity;
 import com.example.pigs.activities.workout.ScheduleActivity;
 import com.example.pigs.activities.workout.WorkoutActivity;
 import com.example.pigs.controllers.ExerciseController;
 
 public class CreateExerciseActivity extends AppCompatActivity {
-    private ExerciseController exerciseController;
     private DrawerLayout drawerLayout;
     private EditText name;
     private Spinner dropdown;

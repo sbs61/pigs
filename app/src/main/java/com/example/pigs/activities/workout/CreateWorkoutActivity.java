@@ -28,7 +28,6 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -43,20 +42,11 @@ import com.example.pigs.entities.Exercise;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-/*
- * TODO: NOT FULLY IMPLEMENTED YET
- */
-
 public class CreateWorkoutActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateWorkoutActivity";
 
-    private ExerciseController exerciseController;
     private DrawerLayout drawerLayout;
-
-    private ListView list;
-    private ArrayList<String> arrayList;
-    private String exercises;
 
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -75,7 +65,6 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         Log.d("onCreate", "onCreate called in CreateWorkoutActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_workout);
-        exerciseController = new ExerciseController();
 
         workoutName  = findViewById(R.id.workoutName);
         workoutCategory = findViewById(R.id.workoutCategory);
@@ -84,6 +73,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         exerciseList = new ArrayList<String>();
         dropdown = (Spinner)findViewById(R.id.dropdown);
         listView = (ListView)findViewById(R.id.exerciseList);
+
         // Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,7 +84,6 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         getExercises();
 
         // Create an ArrayAdapter from List
-
         arrayAdapter = new ArrayAdapter<String>
                 (getApplicationContext(), R.layout.activity_list_item_1, workoutExercises);
 
@@ -142,19 +131,6 @@ public class CreateWorkoutActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-
-        /*
-        // Exercise list
-        list = findViewById(R.id.exerciseList);
-        arrayList = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, arrayList);
-        list.setAdapter(adapter);
-         // TODO: Implement fetch exercises and display as list
-        //exercises = exerciseController.getExercises();
-        //arrayList.add(exercises);
-        // next thing you have to do is check if your adapter has changed
-        adapter.notifyDataSetChanged();
-        */
 
         // Date Picker
         mDisplayDate = findViewById(R.id.workoutDate);
