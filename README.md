@@ -1,7 +1,7 @@
 # PIGS Workout Tracker
 
 ## Setup
-clone and run with Pixel 2 API Q
+Clone and run with Pixel 2 API Q
 
 ## Group
 Guðmundur Guðbjarnason, gug127@hi.is
